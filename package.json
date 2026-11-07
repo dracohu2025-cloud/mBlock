@@ -1,0 +1,28 @@
+{
+  "name": "mblock-mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local MCP server and authenticated extension bridge for mBlock 5.6.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc && node scripts/package-bridge.mjs",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.0.0",
+    "jszip": "3.10.1",
+    "ws": "8.18.3",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/ws": "^8.5.0",
+    "esbuild": "0.28.2",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  }
+}

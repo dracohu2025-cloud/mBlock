@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "mblock": {
+      "command": "node",
+      "args": ["/absolute/path/to/mBlock/dist/server.js"]
+    }
+  }
+}
