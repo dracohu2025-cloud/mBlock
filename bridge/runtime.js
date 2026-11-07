@@ -1,6 +1,7 @@
 // Adapter for the native mBlock 5.6.0 extension context. No arbitrary eval/IPC.
 import { createImageAdapter } from './images.js';
 import { createAssetAdapter } from './assets.js';
+import { createMediaAdapter } from './media.js';
 export function createAdapter(app) {
   const context = app._mCtx;
   const vm = context?.vmCtx?.vm;
@@ -9,6 +10,7 @@ export function createAdapter(app) {
   const runtime = vm.runtime;
   const images = createImageAdapter(vm);
   const assets = createAssetAdapter(vm);
+  const media = createMediaAdapter(vm);
   const copy = value => JSON.parse(JSON.stringify(value));
   const target = id => {
     const found = runtime.targets.filter(t => t.isOriginal !== false && (t.id === id || t.getName() === id));
@@ -73,6 +75,11 @@ export function createAdapter(app) {
   }
 
   return async function dispatch(method, p = {}) {
+    if (method === 'layers') return media.layers();
+    if (Object.hasOwn(media, method)) {
+      const t = target(p.target); ensureSprite(t);
+      return media[method](t, p);
+    }
     if (method === 'createSprite') return assets.createSprite(p);
     if (['renameSprite', 'deleteSprite', 'renameCostume', 'deleteCostume'].includes(method)) {
       const t = target(p.target); ensureSprite(t);
@@ -85,7 +92,7 @@ export function createAdapter(app) {
       if (method === 'setCostume') return images.select(t, p.index);
       return images.importImage(t, p);
     }
-    if (method === 'status') return { adapter: 'mblock-5.6', editingTarget: vm.editingTarget?.id,
+    if (method === 'status') return { adapter: 'mblock-5.6', bridgeVersion: '0.4.0', editingTarget: vm.editingTarget?.id,
       targets: runtime.targets.filter(t => t.isOriginal !== false).map(summary), threads: runtime.threads.length };
     if (method === 'targets') return { targets: runtime.targets.filter(t => t.isOriginal !== false).map(summary) };
     if (method === 'blocks') {

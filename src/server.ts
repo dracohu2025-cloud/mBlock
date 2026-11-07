@@ -8,6 +8,7 @@ import { scriptXml, type BlockSpec } from './script.js';
 import { saveExport } from './project.js';
 import { readImage } from './image.js';
 import { spriteArchive } from './sprite.js';
+import { readSound } from './sound.js';
 
 const hub = new BridgeHub();
 const config = readConfig();
@@ -22,7 +23,7 @@ const blockSchema: z.ZodType<BlockSpec> = z.lazy(() => z.object({
 }));
 
 function createServer() {
-  const server = new McpServer({ name: 'mblock-mcp-server', version: '0.3.0' });
+  const server = new McpServer({ name: 'mblock-mcp-server', version: '0.4.0' });
   function tool<S extends z.ZodType<Record<string, unknown>>>(name: string, description: string, schema: S,
     readonly: boolean, action: (params: z.infer<S>) => Promise<unknown>) {
     server.registerTool(name, {
@@ -91,6 +92,42 @@ function createServer() {
   tool('mblock_delete_costume', '先备份整个项目，再删除角色造型或舞台背景；拒绝删除最后一个。已有脚本的文字引用可能失效，调用前检查。',
     z.object({ target, index: z.number().int().min(0), expectedName: assetName, backupPath }), false,
     p => backupAndDelete('deleteCostume', p));
+  const indexedAsset = { target, index: z.number().int().min(0), expectedName: assetName };
+  tool('mblock_list_sounds', '查询目标声音、素材 ID、时长及音频引擎播放状态。',
+    z.object({ target, ...pagination }), true, p => hub.request('sounds', p));
+  tool('mblock_import_sound', '导入本地 WAV/MP3 为目标的新声音。FFmpeg 本地解码为 44.1kHz 双声道 PCM WAV；输入上限 10 MiB、时长上限 120 秒，拒绝重名。',
+    z.object({ target, path: z.string().min(1), name: assetName }), false, async p => {
+      if (!hub.status().connected) throw new Error('BRIDGE_OFFLINE');
+      const sound = await readSound(p.path);
+      const result = await hub.request('importSound', { target: p.target, name: p.name, base64: sound.base64 }, 30000);
+      const { base64, ...source } = sound;
+      return { ...result as Record<string, unknown>, source };
+    });
+  tool('mblock_rename_sound', '重命名声音，并通过原生 VM 更新积木中的声音名称引用。',
+    z.object({ ...indexedAsset, name: assetName }), false, p => hub.request('renameSound', p));
+  tool('mblock_delete_sound', '备份完整项目后删除声音；允许删除最后一个声音，已有声音积木可能失去引用。',
+    z.object({ ...indexedAsset, backupPath }), false, p => backupAndDelete('deleteSound', p));
+  tool('mblock_play_sound', '在本机播放指定声音。返回 started 和引擎状态，不代表用户实际听到；不等待播放结束。',
+    z.object(indexedAsset), false, p => hub.request('playSound', p));
+  tool('mblock_stop_sounds', '停止指定舞台/角色的声音，不影响其他角色；音频引擎可能短暂淡出。',
+    z.object({ target }), false, p => hub.request('stopSounds', p));
+  tool('mblock_duplicate_sprite', '复制独立角色及其积木、变量、造型和声音，指定唯一新名称；不启动脚本。位置默认与原角色相同。',
+    z.object({ target, name: assetName, x: z.number().finite().min(-240).max(240).optional(),
+      y: z.number().finite().min(-180).max(180).optional() }), false, p => hub.request('duplicateSprite', p, 30000));
+  tool('mblock_duplicate_costume', '在同一目标内复制造型或舞台背景，追加至列表末尾；默认保持当前选择。',
+    z.object({ ...indexedAsset, name: assetName, select: z.boolean().default(false) }), false,
+    p => hub.request('duplicateCostume', p, 30000));
+  tool('mblock_duplicate_sound', '在同一目标内复制声音，追加至列表末尾，使用唯一的新名称。',
+    z.object({ ...indexedAsset, name: assetName }), false, p => hub.request('duplicateSound', p, 30000));
+  tool('mblock_reorder_costume', '移动造型或背景到列表中的指定索引（从 0 开始），保持当前显示素材；数字索引脚本含义可能随排序改变。',
+    z.object({ ...indexedAsset, toIndex: z.number().int().min(0) }), false, p => hub.request('reorderCostume', p));
+  tool('mblock_reorder_sound', '移动声音到指定索引（从 0 开始），保持声音内容；数字索引脚本含义可能改变。',
+    z.object({ ...indexedAsset, toIndex: z.number().int().min(0) }), false, p => hub.request('reorderSound', p));
+  tool('mblock_list_sprite_layers', '查询独立角色在舞台上从后到前的绘制顺序；不包含舞台、设备或运行时克隆。',
+    z.object({}), true, () => hub.request('layers'));
+  tool('mblock_set_sprite_layer', '调整角色舞台图层：front 最前，back 最后，forward 前移，backward 后移；steps 仅对相对移动生效。',
+    z.object({ target, direction: z.enum(['front', 'back', 'forward', 'backward']), steps: z.number().int().min(1).max(1000).default(1) }),
+    false, p => hub.request('setLayer', p));
   tool('mblock_list_blocks', '分页读取目标上的 VM 积木及其 ID、连接、输入和字段。', z.object({ target, ...pagination }), true,
     p => hub.request('blocks', p));
   tool('mblock_list_opcodes', '搜索当前 App 已加载的积木类型。', z.object({ query: z.string().default(''), ...pagination }), true,

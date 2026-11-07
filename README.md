@@ -2,7 +2,7 @@
 
 本仓库包含 **MCP 服务端、mBlock 本地扩展、打包与安装脚本、测试及使用文档**。它面向 mBlock 5.6.0，让 MCP 客户端通过程序接口读取项目、编辑积木、导入图片素材、运行角色脚本和导出完整项目。
 
-**当前版本：0.3.0，实验性实现，共 21 个工具。** 编译和 12 项自动测试通过。2026-11-07 在 macOS mBlock 5.6.0.31 上完成原有 13 个工具的真实调用及项目重新打开验证；0.3.0 新增的 5 个素材管理工具已通过真实 App 调用；0.2.0 的图片导入、造型/背景查询和切换三个工具也已通过真实 App 调用，导出包中的新增图片像素、透明度和引用完整性已检查。尚未覆盖其他 App 版本、复杂扩展项目和全部异常路径，使用前请先在测试项目中验收。
+**当前版本：0.4.0，实验性实现，共 34 个工具。** 编译和 16 项自动测试通过。2026-11-07 在 macOS mBlock 5.6.0.31 上完成原有 13 个工具的真实调用及项目重新打开验证；0.4.0 新增的 13 个声音、排序、复制和图层工具已通过真实 App 调用，并验证包含声音与角色副本的项目重新打开；0.3.0 新增的 5 个素材管理工具已通过真实 App 调用；0.2.0 的图片导入、造型/背景查询和切换三个工具也已通过真实 App 调用，导出包中的新增图片像素、透明度和引用完整性已检查。尚未覆盖其他 App 版本、复杂扩展项目和全部异常路径，使用前请先在测试项目中验收。
 
 ## 工作方式
 
@@ -26,7 +26,7 @@ flowchart LR
 | TypeScript 编译、扩展 ZIP 打包 | 已通过 |
 | 配对校验、错误传播、超时、断线、脚本构造、素材校验 | 自动测试已通过 |
 | MCP initialize、tools/list、离线错误、参数拒绝 | 已通过协议测试 |
-| 真实 App 扩展加载、读写与运行 | macOS 5.6.0.31 实测通过，累计 16 个工具均已调用 |
+| 真实 App 扩展加载、读写与运行 | macOS 5.6.0.31 实测通过，累计 34 个工具均已调用 |
 | 图片导入、造型/背景查询与切换 | PNG、JPEG、WebP 实测通过；透明度和导出素材已校验 |
 | 完整项目从 App 导出后再次打开 | 测试项目通过，积木、坐标、变量和素材保留 |
 | MCP 服务重启后自动重连 | 实测通过 |
@@ -38,6 +38,7 @@ flowchart LR
 ## 环境要求
 
 - Node.js **22 或更高版本**，以及 npm。
+- 声音导入与音频测试需要 **FFmpeg**。优先读取 `MBLOCK_FFMPEG` 指定的可执行文件，否则检查 `/opt/homebrew/bin/ffmpeg`、`/usr/local/bin/ffmpeg`，最后使用 PATH 中的 `ffmpeg`。其他工具不依赖 FFmpeg。
 - 已安装 mBlock 5.6.0 桌面 App。当前接口研究基于 macOS 版 5.6.0.31。
 - 支持 stdio 的 MCP 客户端，或本仓库自带的测试客户端。
 - 本地安装脚本假设扩展目录为用户主目录下的 `mblock/exts`；其他系统和安装布局尚未验证。
@@ -156,6 +157,40 @@ args = ["/absolute/path/to/mBlock/dist/server.js"]
 {"name":"mblock_rename_costume","arguments":{"target":"Stage","index":1,"expectedName":"花园","name":"春天花园"}}
 ```
 
+## 声音、排序、复制与图层（0.4.0）
+
+| 工具 | 参数与作用 |
+| --- | --- |
+| `mblock_list_sounds` | `target`、分页；返回名称、时长、素材 ID、音频引擎播放状态 |
+| `mblock_import_sound` | `target`、绝对 `path`、唯一 `name`；新增声音 |
+| `mblock_rename_sound` | `target`、`index`、`expectedName`、`name`；更新声音及积木中的名称引用 |
+| `mblock_delete_sound` | `target`、`index`、`expectedName`、`backupPath`；备份整个项目后删除，可删除最后一个声音 |
+| `mblock_play_sound` | `target`、`index`、`expectedName`；在本机试听，返回开始状态，不等待结束 |
+| `mblock_stop_sounds` | `target`；停止指定目标的声音，可能有短暂淡出 |
+| `mblock_duplicate_sprite` | `target`、唯一新 `name`、可选 `x/y`；复制角色及积木、变量、造型、声音，不启动脚本 |
+| `mblock_duplicate_costume` | `target`、`index`、`expectedName`、新 `name`、`select=false`；复制造型/背景并追加末尾 |
+| `mblock_duplicate_sound` | `target`、`index`、`expectedName`、新 `name`；复制声音并追加末尾 |
+| `mblock_reorder_costume` | `target`、`index`、`expectedName`、`toIndex`；移动造型/背景，保持当前显示的素材 |
+| `mblock_reorder_sound` | `target`、`index`、`expectedName`、`toIndex`；移动声音 |
+| `mblock_list_sprite_layers` | 无参数；按从后到前返回独立角色绘制顺序 |
+| `mblock_set_sprite_layer` | `target`、`direction=front/back/forward/backward`、`steps=1`；调整绘制层级 |
+
+- 声音只接受本地普通 WAV/MP3 文件，输入不超过 10 MiB、解码时长不超过 120 秒。在本机通过 FFmpeg 标准化为 44.1 kHz、双声道、16 位 PCM WAV，剥离元数据；拒绝网络地址、其他格式、损坏和超长输入。MCP 不负责录音或生成语音。
+- 声音导入等待 App 解码并检查实际音频缓冲；App 使用默认替代声音时会报错并撤销新增。
+- 标准化文件为 44.1 kHz；App 的音频引擎可能按系统采样率重采样，本机读回为 48 kHz，返回的 `source` 与 App 的 `sound` 元数据因此可能不同。
+- 试听的 `started` 和 `playing` 是音频引擎状态，不能证明扬声器有声或用户已经听到。`stop_sounds` 不停止其他角色，也不停止脚本（脚本仍可能再次触发声音）。
+- 所有列表索引从 0 开始。排序可能改变脚本按数字索引选取素材的含义；`expectedName` 校验过时索引，重排后应重新查询。
+- 复制在当前项目内进行，素材复制发生在同一目标内；原素材保留，共享相同内容的底层资源是正常的。新角色具有独立角色和积木 ID。
+- 图层顺序与素材列表顺序不同：图层只控制舞台遮挡，不表示左侧角色列表顺序。返回的 `layerOrder` 是渲染器值，可能不连续；运行时克隆不在查询结果内。图层方法使用 VM 的原生实现，也会更新其执行目标顺序。
+- 音量、声音剪辑、跨角色搬运素材、导出单独音频，以及硬件播放暂不包含在这组工具中。
+
+```json
+{"name":"mblock_import_sound","arguments":{"target":"Panda","path":"/absolute/path/to/hello.mp3","name":"欢迎音效"}}
+{"name":"mblock_play_sound","arguments":{"target":"Panda","index":1,"expectedName":"欢迎音效"}}
+{"name":"mblock_duplicate_sprite","arguments":{"target":"Panda","name":"Panda副本","x":120,"y":0}}
+{"name":"mblock_set_sprite_layer","arguments":{"target":"Panda副本","direction":"front"}}
+```
+
 ## 使用示例
 
 不配置正式 MCP 客户端也可启动独立测试客户端：
@@ -271,6 +306,6 @@ MCP_IMPLEMENTATION.md 本仓库验证记录与待完成验收项
 MCP_VERIFICATION.md   初始第三方实现调查，非本仓库验收报告
 ```
 
-服务协议、App 适配、脚本构造和文件校验各自负责单一职责，统一处理参数和错误。图片解码与 App 素材操作分别位于 `src/image.ts` 和 `bridge/images.js`，角色造型与舞台背景复用同一适配流程。当前范围不包含项目删除、硬件上传和后台常驻服务。声音导入与管理尚未提供 MCP 工具。
+服务协议、App 适配、脚本构造和文件校验各自负责单一职责，统一处理参数和错误。图片解码与 App 素材操作分别位于 `src/image.ts` 和 `bridge/images.js`，角色造型与舞台背景复用同一适配流程。当前范围不包含项目删除、硬件上传和后台常驻服务。声音、排序、复制与舞台图层操作见 0.4.0 工具说明。
 
 详见 [实现验证记录](MCP_IMPLEMENTATION.md) 和 [第三方调查记录](MCP_VERIFICATION.md)。

@@ -20,7 +20,7 @@ const built = await build({ entryPoints: [path.join(root, 'bridge/extension.js')
   write: false, format: 'iife', globalName: 'McpBridge', target: 'chrome100',
   define: { __BRIDGE_URL__: JSON.stringify(`ws://127.0.0.1:${config.port}`), __BRIDGE_TOKEN__: JSON.stringify(config.token) } });
 const wrapper = `(function(factory){if(typeof define==='function'&&define.amd)define(['exports'],factory);else if(typeof exports!=='undefined')factory(exports);else{var out={};factory(out);globalThis.unknown=out;}})(function(exports){\n${built.outputFiles[0].text}\nexports.default=McpBridge.default;\n});`;
-const manifest = { id: 'codex_mcp_bridge', version: '0.3.0', name: { en: 'MCP Bridge', zh: 'MCP Bridge' },
+const manifest = { id: 'codex_mcp_bridge', version: '0.4.0', name: { en: 'MCP Bridge', zh: 'MCP Bridge' },
   description: { en: 'Local authenticated MCP bridge for mBlock 5.6', zh: '本地 MCP 桥接：读取、添加积木、运行角色脚本和导出项目' },
   targets: ['sprites'], main: 'codex_mcp_bridge/index.js', codeTypes: [], device: false, sortId: 999,
   extApiVersion: ['1.0.0'], platform: ['mblockpc'], feature: [] };
