@@ -1,0 +1,18 @@
+import fs from 'node:fs/promises';
+import crypto from 'node:crypto';
+import assert from 'node:assert/strict';
+import sharp from 'sharp';
+import JSZip from 'jszip';
+const zip=await JSZip.loadAsync(await fs.readFile('mblock-project/exports/沙漠绿色公益-音乐30-v015.mblock'));
+const p=JSON.parse(await zip.file('project.json').async('string'));
+const before=structuredClone(p),stage=p.targets.find(t=>t.isStage);
+const c=stage.costumes.find(c=>c.name==='绿色沙漠');assert(c);
+const bytes=await sharp(await fs.readFile('mblock-project/assets/images/desert-no-plants.png')).resize(960,720,{fit:'fill'}).png().toBuffer();
+const hash=crypto.createHash('md5').update(bytes).digest('hex');zip.file(hash+'.png',bytes);
+c.assetId=hash;c.md5ext=hash+'.png';
+assert.deepEqual(p.targets.filter(t=>!t.isStage),before.targets.filter(t=>!t.isStage));
+assert.deepEqual(stage.blocks,before.targets.find(t=>t.isStage).blocks);
+zip.file('project.json',JSON.stringify(p));
+const output='mblock-project/exports/沙漠绿色公益-纯沙漠背景-v016.mblock';
+await fs.writeFile(output,await zip.generateAsync({type:'nodebuffer',compression:'DEFLATE',compressionOptions:{level:6}}));
+console.log(output);console.log('Verified: only background asset reference changed; sprites and game/music scripts unchanged.');
