@@ -65,6 +65,13 @@ test('archive validation catches the upstream missing-asset defect', async () =>
   zip.file('sprite.svg', '<svg/>'); zip.file('mscratch.json', '{}'); zip.file('mblock5', '{}');
   const result = await validateArchive(await zip.generateAsync({ type: 'nodebuffer' }));
   assert.equal(result.mblockMetadata, true);
+  assert.equal(result.assets, 1);
+  zip.file('project.json', JSON.stringify({ targets: [
+    { costumes: [{ md5ext: 'sprite.svg' }, { md5ext: 'sprite.svg' }] },
+    { costumes: [{ assetId: 'sprite', dataFormat: 'svg' }] },
+  ] }));
+  zip.file('extra/readme.txt', 'Not a referenced costume or sound');
+  assert.equal((await validateArchive(await zip.generateAsync({ type: 'nodebuffer' }))).assets, 1);
 });
 
 test('adapter fails on incompatible App and does not claim missing variables were set', async () => {

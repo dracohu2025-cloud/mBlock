@@ -8,14 +8,16 @@ export async function validateArchive(buffer: Buffer) {
   const project = JSON.parse(await file.async('string'));
   if (!Array.isArray(project.targets)) throw new Error('INVALID_TARGETS');
   const missing = [];
+  const assets = new Set<string>();
   for (const target of project.targets) {
     for (const asset of [...(target.costumes ?? []), ...(target.sounds ?? [])]) {
       const name = asset.md5ext ?? `${asset.assetId}.${asset.dataFormat}`;
+      assets.add(name);
       if (!zip.file(name)) missing.push(name);
     }
   }
   if (missing.length) throw new Error(`MISSING_ASSETS: ${missing.join(', ')}`);
-  return { targets: project.targets.length, assets: Object.keys(zip.files).length - 1,
+  return { targets: project.targets.length, assets: assets.size,
     mblockMetadata: Boolean(zip.file('mscratch.json') && zip.file('mblock5')) };
 }
 
