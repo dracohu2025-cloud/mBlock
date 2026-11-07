@@ -1,5 +1,6 @@
 // Adapter for the native mBlock 5.6.0 extension context. No arbitrary eval/IPC.
 import { createImageAdapter } from './images.js';
+import { createAssetAdapter } from './assets.js';
 export function createAdapter(app) {
   const context = app._mCtx;
   const vm = context?.vmCtx?.vm;
@@ -7,6 +8,7 @@ export function createAdapter(app) {
   if (!vm?.runtime || !blockly?.Xml) throw new Error('UNSUPPORTED_APP: 缺少 mBlock VM/Blockly 接口');
   const runtime = vm.runtime;
   const images = createImageAdapter(vm);
+  const assets = createAssetAdapter(vm);
   const copy = value => JSON.parse(JSON.stringify(value));
   const target = id => {
     const found = runtime.targets.filter(t => t.isOriginal !== false && (t.id === id || t.getName() === id));
@@ -71,6 +73,12 @@ export function createAdapter(app) {
   }
 
   return async function dispatch(method, p = {}) {
+    if (method === 'createSprite') return assets.createSprite(p);
+    if (['renameSprite', 'deleteSprite', 'renameCostume', 'deleteCostume'].includes(method)) {
+      const t = target(p.target); ensureSprite(t);
+      if (method === 'deleteSprite' && t.id !== p.target) throw new Error('TARGET_ID_REQUIRED');
+      return assets[method](t, p);
+    }
     if (['costumes', 'setCostume', 'importImage'].includes(method)) {
       const t = target(p.target); ensureSprite(t);
       if (method === 'costumes') return images.list(t, p);

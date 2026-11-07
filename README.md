@@ -2,7 +2,7 @@
 
 本仓库包含 **MCP 服务端、mBlock 本地扩展、打包与安装脚本、测试及使用文档**。它面向 mBlock 5.6.0，让 MCP 客户端通过程序接口读取项目、编辑积木、导入图片素材、运行角色脚本和导出完整项目。
 
-**当前版本：0.2.0，实验性实现，共 16 个工具。** 编译和 9 项自动测试通过。2026-11-07 在 macOS mBlock 5.6.0.31 上完成原有 13 个工具的真实调用及项目重新打开验证；0.2.0 新增的图片导入、造型/背景查询和切换三个工具也已通过真实 App 调用，导出包中的新增图片像素、透明度和引用完整性已检查。尚未覆盖其他 App 版本、复杂扩展项目和全部异常路径，使用前请先在测试项目中验收。
+**当前版本：0.3.0，实验性实现，共 21 个工具。** 编译和 12 项自动测试通过。2026-11-07 在 macOS mBlock 5.6.0.31 上完成原有 13 个工具的真实调用及项目重新打开验证；0.3.0 新增的 5 个素材管理工具已通过真实 App 调用；0.2.0 的图片导入、造型/背景查询和切换三个工具也已通过真实 App 调用，导出包中的新增图片像素、透明度和引用完整性已检查。尚未覆盖其他 App 版本、复杂扩展项目和全部异常路径，使用前请先在测试项目中验收。
 
 ## 工作方式
 
@@ -136,6 +136,26 @@ args = ["/absolute/path/to/mBlock/dist/server.js"]
 
 成功响应的 `structuredContent.result` 包含结果，同时提供同内容的 JSON 文本。操作失败返回 `isError: true` 和具体错误，不将离线、App 异常或超时包装为成功。
 
+## 角色与素材管理（0.3.0）
+
+| 工具 | 用途 |
+| --- | --- |
+| `mblock_create_sprite` | 从本地 PNG/JPEG/WebP 新建独立角色；必填 `path`、`name`，可选 `x`、`y`、`size`、`bitmapResolution`（默认 2） |
+| `mblock_rename_sprite` | 按 `target` 和 `name` 重命名角色，更新积木角色引用；拒绝重名、舞台及设备 |
+| `mblock_delete_sprite` | 使用角色 **ID**、`expectedName` 和 `backupPath` 删除角色及脚本；先备份整个项目 |
+| `mblock_rename_costume` | 按 `target`、`index`、`expectedName`、`name` 重命名造型或背景，更新积木引用 |
+| `mblock_delete_costume` | 按 `target`、`index`、`expectedName`、`backupPath` 删除造型或背景；至少保留一个 |
+
+背景属于 Stage 的造型：使用 `mblock_import_image` 向 Stage 新增背景，使用 `mblock_list_costumes` 查询和 `mblock_set_costume` 切换。不需要创建另一个舞台。
+
+删除前自动导出完整 `.mblock` 到指定新路径；备份失败则不执行删除。`expectedName` 用于检测列表索引或名称是否已变化。删除造型/背景后，已有脚本里的文字引用可能失效，应先检查使用情况。新建角色遇到超时应先查询目标，避免重复创建；明确同名请求会报错。角色创建失败会尝试回滚本次唯一识别出的新角色，不移除其他角色。
+
+```json
+{"name":"mblock_create_sprite","arguments":{"path":"/absolute/path/to/carrot.png","name":"胡萝卜","x":120,"y":0}}
+{"name":"mblock_import_image","arguments":{"target":"Stage","path":"/absolute/path/to/background.png","name":"花园"}}
+{"name":"mblock_rename_costume","arguments":{"target":"Stage","index":1,"expectedName":"花园","name":"春天花园"}}
+```
+
 ## 使用示例
 
 不配置正式 MCP 客户端也可启动独立测试客户端：
@@ -178,7 +198,7 @@ node "scripts/probe.mjs"
 
 ### 导入图片素材
 
-先用图像生成工具制作图片或准备已有文件，再调用本 MCP 导入。**本 MCP 负责本地图片导入，不生成图像，也不发布到 mBlock 云端素材库。** 目标必须是当前项目中已有的角色或舞台；工具不会新建角色。
+先用图像生成工具制作图片或准备已有文件，再调用本 MCP 导入。**本 MCP 负责本地图片导入及角色/素材管理，不生成图像，也不发布到 mBlock 云端素材库。** 目标必须是当前项目中已有的角色或舞台；如需新建独立角色，请使用 `mblock_create_sprite`。
 
 ```json
 {"name":"mblock_list_costumes","arguments":{"target":"Panda"}}
@@ -251,6 +271,6 @@ MCP_IMPLEMENTATION.md 本仓库验证记录与待完成验收项
 MCP_VERIFICATION.md   初始第三方实现调查，非本仓库验收报告
 ```
 
-服务协议、App 适配、脚本构造和文件校验各自负责单一职责，统一处理参数和错误。图片解码与 App 素材操作分别位于 `src/image.ts` 和 `bridge/images.js`，角色造型与舞台背景复用同一适配流程。当前范围不包含项目删除、硬件上传和后台常驻服务。
+服务协议、App 适配、脚本构造和文件校验各自负责单一职责，统一处理参数和错误。图片解码与 App 素材操作分别位于 `src/image.ts` 和 `bridge/images.js`，角色造型与舞台背景复用同一适配流程。当前范围不包含项目删除、硬件上传和后台常驻服务。声音导入与管理尚未提供 MCP 工具。
 
 详见 [实现验证记录](MCP_IMPLEMENTATION.md) 和 [第三方调查记录](MCP_VERIFICATION.md)。

@@ -7,6 +7,7 @@ import { readConfig } from './config.js';
 import { scriptXml, type BlockSpec } from './script.js';
 import { saveExport } from './project.js';
 import { readImage } from './image.js';
+import { spriteArchive } from './sprite.js';
 
 const hub = new BridgeHub();
 const config = readConfig();
@@ -21,7 +22,7 @@ const blockSchema: z.ZodType<BlockSpec> = z.lazy(() => z.object({
 }));
 
 function createServer() {
-  const server = new McpServer({ name: 'mblock-mcp-server', version: '0.2.0' });
+  const server = new McpServer({ name: 'mblock-mcp-server', version: '0.3.0' });
   function tool<S extends z.ZodType<Record<string, unknown>>>(name: string, description: string, schema: S,
     readonly: boolean, action: (params: z.infer<S>) => Promise<unknown>) {
     server.registerTool(name, {
@@ -60,6 +61,36 @@ function createServer() {
       return { ...result as Record<string, unknown>, source: { width: image.width, height: image.height,
         format: image.sourceFormat, normalizedBytes: image.bytes } };
     });
+  const assetName = z.string().trim().min(1).max(100).regex(/^[^\x00-\x1f\x7f]+$/);
+  tool('mblock_create_sprite', '从本地 PNG/JPEG/WebP 新建独立角色，不改变已有角色。拒绝重名，图片限制同 import_image；不会运行脚本。',
+    z.object({ path: z.string().min(1), name: assetName,
+      x: z.number().finite().min(-240).max(240).default(0), y: z.number().finite().min(-180).max(180).default(0),
+      size: z.number().finite().min(1).max(500).default(100),
+      bitmapResolution: z.union([z.literal(1), z.literal(2)]).default(2) }), false, async p => {
+      if (!hub.status().connected) throw new Error('BRIDGE_OFFLINE');
+      const image = await readImage(p.path);
+      const base64 = await spriteArchive(image.base64, { ...p, width: image.width, height: image.height });
+      return hub.request('createSprite', { name: p.name, base64 }, 30000);
+    });
+  tool('mblock_rename_sprite', '重命名独立角色并更新积木中的角色引用。拒绝舞台、设备和重名。',
+    z.object({ target, name: assetName }), false, p => hub.request('renameSprite', p));
+  tool('mblock_rename_costume', '重命名角色造型或舞台背景并更新相关积木引用；expectedName 用于校验索引未变化。',
+    z.object({ target, index: z.number().int().min(0), expectedName: assetName, name: assetName }), false,
+    p => hub.request('renameCostume', p));
+  async function backupAndDelete(method: string, p: { backupPath: string; [key: string]: unknown }) {
+    // A failed backup must never be followed by a deletion. Never overwrite backups.
+    const backup = await saveExport(p.backupPath, await hub.request('exportProject', {}, 30000));
+    try { return { ...await hub.request(method, p) as Record<string, unknown>, backup }; }
+    catch (error) { throw new Error(`${String(error)}; 删除前备份已保存到 ${p.backupPath}`); }
+  }
+  const backupPath = z.string().min(1).refine(p => path.isAbsolute(p) && path.extname(p) === '.mblock',
+    '需要新的 .mblock 绝对路径').describe('删除前完整项目备份；父目录须存在，拒绝覆盖。失败时不删除');
+  tool('mblock_delete_sprite', '先备份整个项目，再删除指定 ID 的独立角色及其脚本。禁止删除舞台/设备；expectedName 防止误删。',
+    z.object({ target: target.describe('要删除的角色 ID；应先 list_targets'), expectedName: assetName, backupPath }), false,
+    p => backupAndDelete('deleteSprite', p));
+  tool('mblock_delete_costume', '先备份整个项目，再删除角色造型或舞台背景；拒绝删除最后一个。已有脚本的文字引用可能失效，调用前检查。',
+    z.object({ target, index: z.number().int().min(0), expectedName: assetName, backupPath }), false,
+    p => backupAndDelete('deleteCostume', p));
   tool('mblock_list_blocks', '分页读取目标上的 VM 积木及其 ID、连接、输入和字段。', z.object({ target, ...pagination }), true,
     p => hub.request('blocks', p));
   tool('mblock_list_opcodes', '搜索当前 App 已加载的积木类型。', z.object({ query: z.string().default(''), ...pagination }), true,
