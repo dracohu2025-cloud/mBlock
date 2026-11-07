@@ -1,8 +1,8 @@
 # mBlock MCP
 
-本仓库包含 **MCP 服务端、mBlock 本地扩展、打包与安装脚本、测试及使用文档**。它面向 mBlock 5.6.0，旨在让 MCP 客户端通过程序接口读取项目、编辑积木、运行角色脚本和导出完整项目。
+本仓库包含 **MCP 服务端、mBlock 本地扩展、打包与安装脚本、测试及使用文档**。它面向 mBlock 5.6.0，让 MCP 客户端通过程序接口读取项目、编辑积木、导入图片素材、运行角色脚本和导出完整项目。
 
-**当前版本：0.1.0，实验性实现。** 编译、5 项自动测试、MCP 协议握手及 **13 个工具的真实 App 调用已验证**。2026-11-07 在 macOS mBlock 5.6.0.31 上完成扩展安装、积木读写、脚本运行/停止、变量操作、项目导出及重新打开后的回读验证。尚未覆盖其他 App 版本、复杂扩展项目和全部异常路径，使用前请先在测试项目中验收。
+**当前版本：0.2.0，实验性实现，共 16 个工具。** 编译和 9 项自动测试通过。2026-11-07 在 macOS mBlock 5.6.0.31 上完成原有 13 个工具的真实调用及项目重新打开验证；0.2.0 新增的图片导入、造型/背景查询和切换三个工具也已通过真实 App 调用，导出包中的新增图片像素、透明度和引用完整性已检查。尚未覆盖其他 App 版本、复杂扩展项目和全部异常路径，使用前请先在测试项目中验收。
 
 ## 工作方式
 
@@ -11,6 +11,7 @@ flowchart LR
     Client[Codex / 其他 MCP 客户端] <-->|MCP stdio| Server[Node.js 服务]
     Server <-->|WebSocket + 本机配对令牌| Bridge[mBlock MCP Bridge 扩展]
     Bridge <--> Runtime[mBlock Scratch VM / Blockly]
+    Image[本地 PNG / JPEG / WebP] --> Server
     Server --> Export[本地 .mblock 文件]
 ```
 
@@ -25,7 +26,8 @@ flowchart LR
 | TypeScript 编译、扩展 ZIP 打包 | 已通过 |
 | 配对校验、错误传播、超时、断线、脚本构造、素材校验 | 自动测试已通过 |
 | MCP initialize、tools/list、离线错误、参数拒绝 | 已通过协议测试 |
-| 真实 App 扩展加载、读写与运行 | macOS 5.6.0.31 实测通过，13 个工具均已调用 |
+| 真实 App 扩展加载、读写与运行 | macOS 5.6.0.31 实测通过，累计 16 个工具均已调用 |
+| 图片导入、造型/背景查询与切换 | PNG、JPEG、WebP 实测通过；透明度和导出素材已校验 |
 | 完整项目从 App 导出后再次打开 | 测试项目通过，积木、坐标、变量和素材保留 |
 | MCP 服务重启后自动重连 | 实测通过 |
 | 机器人运行、设备上传、固件操作 | 不支持 |
@@ -76,6 +78,8 @@ node "scripts/install-bridge.mjs" --confirm
 
 在 mBlock 中打开“添加扩展 → 本地角色扩展”，选择 **MCP Bridge**。如果 App 已缓存扩展列表，保存项目后重启 App。服务启动后，扩展中的状态积木应显示“已连接”；以 `mblock_status` 的实际返回为最终判断。
 
+**从旧版本升级：** 更新源码后重新执行 `npm ci --ignore-scripts`、`npm run build` 和上述安装命令；保存项目，退出并重新打开 mBlock，重新加载 MCP Bridge，同时重启 MCP 客户端的服务连接。只替换磁盘上的扩展文件不会更新 App 已加载的代码；本次升级实测旧代码会对图片工具返回 `UNKNOWN_METHOD`，重启后恢复。
+
 首次打开扩展中心可能出现 mBlock 自身的隐私提示，请阅读并自行决定是否接受。**添加扩展是项目级操作**：本次测试项目未使用 MCP Bridge 自身的积木，导出后 `project.json` 的 `extensions` 为空；重新打开时桥接未自动加载，需要再次添加 MCP Bridge。重新打开项目后也应重新查询目标 ID，不要复用上次的 ID。
 
 ### 3. 连接 MCP 客户端
@@ -115,6 +119,9 @@ args = ["/absolute/path/to/mBlock/dist/server.js"]
 | --- | --- | --- |
 | `mblock_status` | 无 | 查询连接；已连接时向 App 读取实际状态 |
 | `mblock_list_targets` | 无 | 列出舞台、角色和设备的 ID、坐标、积木数 |
+| `mblock_list_costumes` | `target`, `offset`, `limit` | 列出角色造型或舞台背景、当前选择、尺寸及素材 ID |
+| `mblock_import_image` | `target`, `path`, `name?`, `select?`, `bitmapResolution?` | 将本地图片新增为造型或背景，等待 App 加载并返回实际素材信息 |
+| `mblock_set_costume` | `target`, `index` | 按从 0 开始的索引切换造型或背景，不触发背景切换事件脚本 |
 | `mblock_list_blocks` | `target`, `offset`, `limit` | 读取 VM 积木、输入、字段和连接关系 |
 | `mblock_list_opcodes` | `query`, `offset`, `limit` | 搜索 App 当前已加载的积木类型 |
 | `mblock_add_script` | `target`, `blocks`, `x`, `y` | 添加结构化脚本，读回 VM 后返回；不自动运行 |
@@ -137,7 +144,7 @@ args = ["/absolute/path/to/mBlock/dist/server.js"]
 node "scripts/probe.mjs"
 ```
 
-客户端会自动启动服务。每行输入一个 JSON 请求；`tools` 列出工具，`quit` 停止测试客户端及其子进程。下述积木、变量和导出流程已在真实 App 上实测，名称和 ID 需按当前项目替换。
+客户端会自动启动服务。每行输入一个 JSON 请求；`tools` 列出工具，`quit` 停止测试客户端及其子进程。下述积木、图片、变量和导出流程已在真实 App 上实测，名称和 ID 需按当前项目替换。
 
 ### 查询和添加脚本
 
@@ -169,6 +176,27 @@ node "scripts/probe.mjs"
 
 返回 `actual` 是 App 校验后的实际字段值；不要仅凭输入参数推断修改结果。
 
+### 导入图片素材
+
+先用图像生成工具制作图片或准备已有文件，再调用本 MCP 导入。**本 MCP 负责本地图片导入，不生成图像，也不发布到 mBlock 云端素材库。** 目标必须是当前项目中已有的角色或舞台；工具不会新建角色。
+
+```json
+{"name":"mblock_list_costumes","arguments":{"target":"Panda"}}
+{"name":"mblock_import_image","arguments":{"target":"Panda","path":"/absolute/path/to/character.png","name":"角色新造型","select":false}}
+{"name":"mblock_import_image","arguments":{"target":"Stage","path":"/absolute/path/to/background.jpg","name":"新背景"}}
+{"name":"mblock_import_image","arguments":{"target":"Panda","path":"/absolute/path/to/detail.webp","bitmapResolution":2}}
+{"name":"mblock_set_costume","arguments":{"target":"Panda","index":2}}
+```
+
+- `path` 必须是本地普通文件的绝对路径，仅支持静态 **PNG、JPEG、WebP**。输入上限 **10 MiB**，单边最多 **4096 像素**，标准化 PNG 上限 **20 MiB**；拒绝 SVG、GIF、APNG、动画 WebP、损坏文件及超限图片。
+- 文件在本机解码，校正 JPEG 方向、移除元数据并转为 PNG，保留透明通道。图片字节通过本机配对连接进入 App。
+- `name` 省略时使用文件名；新增素材不覆盖已有造型，重名由 App 处理，以返回的实际名称为准。
+- `select` 默认 `true`，导入后显示新素材；`false` 保持原造型/背景。可用列表结果中的 `index` 随后切换，索引从 **0** 开始；示例中的 `2` 需替换为实际导入结果。
+- `bitmapResolution` 默认 `1`，每像素对应一个舞台单位；设为 `2` 时显示尺寸减半。mBlock 可能把分辨率 1 的图片存成两倍像素、分辨率 2，显示大小不变。例如本次 96×96 PNG 存储为 192×192、分辨率 2；`source` 为输入尺寸，`costume` 为 App 实际存储结果。
+- 导入会等待 App 的素材加载完成，检查渲染信息和实际素材；若 App 用默认替代图片兜底，则报错并撤销此次新增。不要将超时后自动重试当作安全操作，应先查询素材列表，避免重复导入。
+
+导入后调用 `mblock_export_project` 保存完整项目。原始图片仍保留在输入路径中。
+
 ### 变量与导出
 
 ```json
@@ -191,6 +219,10 @@ node "scripts/probe.mjs"
 | `UNSUPPORTED_APP` | App 内部接口不兼容；重新核对版本，不应跳过校验 |
 | `TARGET_NOT_UNIQUE` | 使用 `mblock_list_targets` 返回的目标 ID |
 | `UNKNOWN_OPCODE` | 查询 `mblock_list_opcodes`，确认对应扩展已在 App 中加载 |
+| `UNKNOWN_METHOD` | 服务与 App 中已加载的扩展版本不一致；重新构建安装并保存、重启 mBlock，重新添加桥接 |
+| `UNSUPPORTED_IMAGE` / `INVALID_IMAGE` / `ANIMATED_IMAGE_NOT_SUPPORTED` | 使用有效的静态 PNG、JPEG 或 WebP，检查格式、尺寸与文件大小 |
+| `COSTUME_NOT_FOUND` | 重新查询素材列表，使用从 0 开始的有效索引 |
+| `IMAGE_IMPORT_NOT_CONFIRMED` | App 素材加载失败；检查图片与 App 版本，本次新增会尝试回滚 |
 | `VARIABLE_NOT_FOUND` | 确认变量所属目标；舞台全局变量与角色变量分开查询 |
 | `BRIDGE_TIMEOUT` / `BRIDGE_DISCONNECTED` | 写入结果可能未知，先读回状态，勿自动重试写操作 |
 | `MISSING_ASSETS` / `MBLOCK_METADATA_MISSING` | 导出不完整，保持报错并排查 App 序列化；不要宣称文件可正常使用 |
@@ -210,7 +242,7 @@ node "scripts/probe.mjs"
 ## 项目结构与验证资料
 
 ```text
-src/                  MCP 工具、连接管理、脚本构造、项目校验
+src/                  MCP 工具、连接管理、脚本构造、图片解码、项目校验
 bridge/               mBlock 扩展生命周期与 VM/Blockly 适配
 scripts/              扩展打包、本地安装、交互测试客户端
 tests/                自动测试
@@ -219,6 +251,6 @@ MCP_IMPLEMENTATION.md 本仓库验证记录与待完成验收项
 MCP_VERIFICATION.md   初始第三方实现调查，非本仓库验收报告
 ```
 
-服务协议、App 适配、脚本构造和文件校验各自负责单一职责，统一处理参数和错误。当前范围不包含项目删除、硬件上传和后台常驻服务。
+服务协议、App 适配、脚本构造和文件校验各自负责单一职责，统一处理参数和错误。图片解码与 App 素材操作分别位于 `src/image.ts` 和 `bridge/images.js`，角色造型与舞台背景复用同一适配流程。当前范围不包含项目删除、硬件上传和后台常驻服务。
 
 详见 [实现验证记录](MCP_IMPLEMENTATION.md) 和 [第三方调查记录](MCP_VERIFICATION.md)。

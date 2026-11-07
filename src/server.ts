@@ -6,6 +6,7 @@ import { BridgeHub } from './hub.js';
 import { readConfig } from './config.js';
 import { scriptXml, type BlockSpec } from './script.js';
 import { saveExport } from './project.js';
+import { readImage } from './image.js';
 
 const hub = new BridgeHub();
 const config = readConfig();
@@ -20,7 +21,7 @@ const blockSchema: z.ZodType<BlockSpec> = z.lazy(() => z.object({
 }));
 
 function createServer() {
-  const server = new McpServer({ name: 'mblock-mcp-server', version: '0.1.0' });
+  const server = new McpServer({ name: 'mblock-mcp-server', version: '0.2.0' });
   function tool<S extends z.ZodType<Record<string, unknown>>>(name: string, description: string, schema: S,
     readonly: boolean, action: (params: z.infer<S>) => Promise<unknown>) {
     server.registerTool(name, {
@@ -41,6 +42,24 @@ function createServer() {
     async () => hub.status().connected ? hub.request('status') : hub.status());
   tool('mblock_list_targets', '列出真实 App 当前项目的舞台、角色和设备及 ID。', z.object({}), true,
     () => hub.request('targets'));
+  tool('mblock_list_costumes', '列出角色造型或舞台背景，返回从 0 开始的索引、素材 ID、尺寸和当前选择。',
+    z.object({ target, ...pagination }), true, p => hub.request('costumes', p));
+  tool('mblock_set_costume', '按从 0 开始的索引切换角色造型或舞台背景；不触发背景切换事件脚本。',
+    z.object({ target, index: z.number().int().min(0) }), false, p => hub.request('setCostume', p));
+  tool('mblock_import_image', '将本地 PNG/JPEG/WebP 图片导入已有角色的造型或 Stage 的背景。仅新增，不覆盖；返回 App 实际素材信息。输入上限 10 MiB、单边 4096 像素；保留透明度，拒绝动画和 SVG。',
+    z.object({ target, path: z.string().min(1).describe('本地图片绝对路径'),
+      name: z.string().trim().min(1).max(100).optional(), select: z.boolean().default(true),
+      bitmapResolution: z.union([z.literal(1), z.literal(2)]).default(1)
+        .describe('每个舞台单位对应的图片像素数；1 为原始尺寸，2 为半尺寸') }), false,
+    async p => {
+      if (!hub.status().connected) throw new Error('BRIDGE_OFFLINE: 请先在 mBlock 加载 MCP Bridge');
+      const image = await readImage(p.path);
+      const name = p.name ?? (path.parse(p.path).name.replace(/[\x00-\x1f\x7f]/g, '').trim().slice(0, 100) || 'image');
+      const result = await hub.request('importImage', { target: p.target, name, select: p.select,
+        bitmapResolution: p.bitmapResolution, base64: image.base64 }, 30000);
+      return { ...result as Record<string, unknown>, source: { width: image.width, height: image.height,
+        format: image.sourceFormat, normalizedBytes: image.bytes } };
+    });
   tool('mblock_list_blocks', '分页读取目标上的 VM 积木及其 ID、连接、输入和字段。', z.object({ target, ...pagination }), true,
     p => hub.request('blocks', p));
   tool('mblock_list_opcodes', '搜索当前 App 已加载的积木类型。', z.object({ query: z.string().default(''), ...pagination }), true,

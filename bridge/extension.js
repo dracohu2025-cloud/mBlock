@@ -13,7 +13,7 @@ function connect(app) {
   catch (error) { status = error.message; return; }
   socket = new WebSocket(__BRIDGE_URL__);
   const ws = socket;
-  ws.onopen = () => ws.send(JSON.stringify({ kind: 'hello', token: __BRIDGE_TOKEN__, info: { adapter: 'mblock-5.6', bridgeVersion: '0.1.0' } }));
+  ws.onopen = () => ws.send(JSON.stringify({ kind: 'hello', token: __BRIDGE_TOKEN__, info: { adapter: 'mblock-5.6', bridgeVersion: '0.2.0' } }));
   ws.onmessage = event => {
     let message;
     try { message = JSON.parse(event.data); } catch { return; }
@@ -40,7 +40,7 @@ export default class McpBridgeExtension {
   }
   getInfo() {
     return {
-      id: 'codex_mcp_bridge', targets: [{ name: 'sprites' }], version: '0.1.0',
+      id: 'codex_mcp_bridge', targets: [{ name: 'sprites' }], version: '0.2.0',
       platform: ['mblockpc'], codeTypes: [], feature: [],
       categories: [{ name: 'MCP Bridge', colors: ['#3979C8', '#2A5DA0', '#204878'], blocks: [
         { opcode: 'status', blockType: 'string', text: 'MCP Bridge 状态', arguments: {}, handler: this.funcs.status },
