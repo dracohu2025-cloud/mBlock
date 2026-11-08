@@ -1,0 +1,91 @@
+// Executes project blocks with a small deterministic scheduler. This checks game
+// progression without rendering; it is not a substitute for an mBlock UI playthrough.
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import JSZip from 'jszip';
+const zip=await JSZip.loadAsync(await fs.readFile('mblock-project/exports/沙漠绿色公益-三关挑战-v020.mblock'));
+const p=JSON.parse(await zip.file('project.json').async('string')),stage=p.targets.find(t=>t.isStage),robot=p.targets.find(t=>t.name==='蓝豆机器人');
+let now=0,threads=[],seed=12345;
+const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/2**32;};
+const get=(t,id)=>(t.variables[id]||stage.variables[id])[1];
+const set=(t,id,v)=>{(t.variables[id]||stage.variables[id])[1]=v;};
+const list=(t,id)=>(t.lists[id]||stage.lists[id])[1];
+const eq=(a,b)=>String(a).toLowerCase()===String(b).toLowerCase()||(String(a).trim()!==''&&String(b).trim()!==''&&Number(a)===Number(b));
+function input(t,a){let v=a?.[1];if(Array.isArray(v))return v[0]===12?get(t,v[2]):v[1];return typeof v==='string'?value(t,v):v;}
+function value(t,id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);switch(b.opcode){
+ case 'operator_equals':return eq(I('OPERAND1'),I('OPERAND2'));
+ case 'operator_gt':return Number(I('OPERAND1'))>Number(I('OPERAND2'));
+ case 'operator_lt':return Number(I('OPERAND1'))<Number(I('OPERAND2'));
+ case 'operator_not':return !I('OPERAND');
+ case 'operator_contains':return String(I('STRING1')).includes(String(I('STRING2')));
+ case 'operator_join':return String(I('STRING1'))+String(I('STRING2'));
+ case 'operator_random':{let a=Number(I('FROM')),b=Number(I('TO'));return a+Math.floor(random()*(b-a+1));}
+ case 'operator_add':return Number(I('NUM1'))+Number(I('NUM2'));
+ case 'operator_multiply':return Number(I('NUM1'))*Number(I('NUM2'));
+ case 'operator_divide':return Number(I('NUM1'))/Number(I('NUM2'));
+ case 'data_itemoflist':return list(t,b.fields.LIST[1])[Number(I('INDEX'))-1]??'';
+ case 'data_lengthoflist':return list(t,b.fields.LIST[1]).length;
+ case 'data_variable':return get(t,b.fields.VARIABLE[1]);
+ case 'sensing_of_object_menu':return b.fields.OBJECT[0];
+ case 'sensing_of':{const target=p.targets.find(t=>t.name===I('OBJECT'));return ({'x position':target.x,'y position':target.y,'size':target.size,'costume #':target.currentCostume+1})[b.fields.PROPERTY[0]];}
+ case 'sound_sounds_menu':return b.fields.SOUND_MENU[0];
+ case 'looks_costume':return b.fields.COSTUME[0];
+ default:throw Error(`Unknown reporter ${b.opcode}`);
+}}
+function launch(op,broadcast,target){for(const t of p.targets.filter(t=>!target||t===target))for(const [id,b] of Object.entries(t.blocks))if(b.opcode===op&&(!broadcast||b.fields.BROADCAST_OPTION?.[1]===broadcast)){
+ const key=t.name+':'+id;threads=threads.filter(x=>x.key!==key);threads.push({key,t,g:run(t,b.next),wake:now});
+}}
+function* run(t,id){while(id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);switch(b.opcode){
+ case 'data_setvariableto':set(t,b.fields.VARIABLE[1],I('VALUE'));break;
+ case 'data_changevariableby':set(t,b.fields.VARIABLE[1],Number(get(t,b.fields.VARIABLE[1]))+Number(I('VALUE')));break;
+ case 'data_deletealloflist':list(t,b.fields.LIST[1]).length=0;break;
+ case 'data_addtolist':list(t,b.fields.LIST[1]).push(I('ITEM'));break;
+ case 'control_if':if(I('CONDITION'))yield*run(t,b.inputs.SUBSTACK[1]);break;
+ case 'control_if_else':yield*run(t,b.inputs[I('CONDITION')?'SUBSTACK':'SUBSTACK2'][1]);break;
+ case 'control_repeat':for(let n=0,count=Number(I('TIMES'));n<count;n++){yield*run(t,b.inputs.SUBSTACK[1]);yield 1/30;}break;
+ case 'control_forever':for(;;){yield*run(t,b.inputs.SUBSTACK[1]);yield 1/30;}
+ case 'control_repeat_until':{let guard=0;while(!I('CONDITION')){if(++guard>10000)throw Error('loop runaway');yield*run(t,b.inputs.SUBSTACK[1]);yield 1/30;}}break;
+ case 'control_wait_until':while(!I('CONDITION'))yield 1/30;break;
+ case 'control_wait':yield Number(I('DURATION'));break;
+ case 'control_stop':return;
+ case 'event_broadcast':launch('event_whenbroadcastreceived',b.inputs.BROADCAST_INPUT[1][2]);break;
+ case 'looks_show':t.visible=true;break;
+ case 'looks_hide':t.visible=false;break;
+ case 'looks_setsizeto':t.size=Number(I('SIZE'));break;
+ case 'looks_changesizeby':t.size+=Number(I('CHANGE'));break;
+ case 'looks_switchcostumeto':{const c=I('COSTUME');const byName=t.costumes.findIndex(x=>x.name===c);t.currentCostume=byName>=0?byName:(Number(c)-1)%t.costumes.length;}break;
+ case 'looks_say':break;
+ case 'looks_sayforsecs':yield Number(I('SECS'));break;
+ case 'motion_gotoxy':t.x=Number(I('X'));t.y=Number(I('Y'));break;
+ case 'motion_glidesecstoxy':yield Number(I('SECS'));t.x=Number(I('X'));t.y=Number(I('Y'));break;
+ case 'motion_pointindirection':t.direction=Number(I('DIRECTION'));break;
+ case 'sound_setvolumeto':t.volume=Number(I('VOLUME'));break;
+ case 'sound_play':case 'sound_stopallsounds':break;
+ case 'sound_playuntildone':yield .1;break;
+ default:throw Error(`Unknown opcode ${b.opcode}`);
+ }id=b.next;}}
+function until(condition){const deadline=now+120;while(!condition()){
+ if(now>deadline)throw Error('Timed out '+JSON.stringify(stage.variables));
+ const thread=threads.filter(x=>x.wake<=now).sort((a,b)=>a.wake-b.wake)[0];
+ if(!thread){now=Math.min(...threads.map(t=>t.wake));continue;}
+ const result=thread.g.next();if(result.done)threads=threads.filter(x=>x!==thread);else thread.wake=now+Math.max(result.value,1/120);
+}}
+const state=id=>{const x=get(stage,id);return x!==''&&Number.isFinite(Number(x))?Number(x):x;},click=letter=>launch('event_whenthisspriteclicked',null,p.targets.find(t=>t.name===`答案${letter}`));
+launch('event_whenflagclicked');
+for(let level=1;level<=3;level++){
+ const seen=new Set();
+ for(let n=0;n<5;n++){
+  until(()=>state('game-level')===level&&Number(state('quiz-click-ready'))===1);
+  const question=get(robot,'E+%ar3|qW:DZjq^qGmWZ');assert(!seen.has(question));seen.add(question);
+  assert(list(stage,'game-pool').includes(question));
+  const answer=get(robot,'y~RTTqq3ZyBb*3!4k!}~');
+  if(n===0){click(answer==='A'?'B':'A');until(()=>Number(state('quiz-click-ready'))===0);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),n);until(()=>Number(state('quiz-click-ready'))===1);}
+  click(answer);until(()=>Number(state('quiz-click-ready'))===0);
+  // A second answer during the locked interval must not replace the choice.
+  click(answer==='A'?'B':'A');until(()=>Number(state('%z6KO!=AV03bkJsGH`QJ'))===n+1);assert.equal(state('quiz-click-choice'),answer);
+ }
+ until(()=>state('game-phase')===2);assert.equal(Number(state('mature-tree-count')),5);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),5);
+ console.log(`PASS level ${level}: five distinct themed questions, wrong-answer retry, click lock, five mature trees.`);
+ launch('event_whenthisspriteclicked',null,p.targets.find(t=>t.name==='关卡继续按钮'));until(()=>state('game-phase')===0);
+}
+until(()=>state('game-level')===1&&Number(state('quiz-click-ready'))===1);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),0);assert.equal(Number(state('mature-tree-count')),0);console.log('PASS replay resets level, input and trees.');
