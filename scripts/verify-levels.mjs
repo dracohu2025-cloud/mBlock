@@ -3,8 +3,9 @@
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import JSZip from 'jszip';
-const zip=await JSZip.loadAsync(await fs.readFile('mblock-project/exports/沙漠绿色公益-三关挑战-v020.mblock'));
+const zip=await JSZip.loadAsync(await fs.readFile(process.argv[2] || 'mblock-project/exports/沙漠绿色公益-三关挑战-v020.mblock'));
 const p=JSON.parse(await zip.file('project.json').async('string')),stage=p.targets.find(t=>t.isStage),robot=p.targets.find(t=>t.name==='蓝豆机器人');
+const STOP=Symbol('stop-script');
 let now=0,threads=[],seed=12345;
 const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/2**32;};
 const get=(t,id)=>(t.variables[id]||stage.variables[id])[1];
@@ -47,7 +48,7 @@ function* run(t,id){while(id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);swi
  case 'control_repeat_until':{let guard=0;while(!I('CONDITION')){if(++guard>10000)throw Error('loop runaway');yield*run(t,b.inputs.SUBSTACK[1]);yield 1/30;}}break;
  case 'control_wait_until':while(!I('CONDITION'))yield 1/30;break;
  case 'control_wait':yield Number(I('DURATION'));break;
- case 'control_stop':return;
+ case 'control_stop':throw STOP;
  case 'event_broadcast':launch('event_whenbroadcastreceived',b.inputs.BROADCAST_INPUT[1][2]);break;
  case 'looks_show':t.visible=true;break;
  case 'looks_hide':t.visible=false;break;
@@ -68,18 +69,29 @@ function until(condition){const deadline=now+120;while(!condition()){
  if(now>deadline)throw Error('Timed out '+JSON.stringify(stage.variables));
  const thread=threads.filter(x=>x.wake<=now).sort((a,b)=>a.wake-b.wake)[0];
  if(!thread){now=Math.min(...threads.map(t=>t.wake));continue;}
- const result=thread.g.next();if(result.done)threads=threads.filter(x=>x!==thread);else thread.wake=now+Math.max(result.value,1/120);
+ let result;try{result=thread.g.next();}catch(error){if(error!==STOP)throw error;result={done:true};}if(result.done)threads=threads.filter(x=>x!==thread);else thread.wake=now+Math.max(result.value,1/120);
 }}
 const state=id=>{const x=get(stage,id);return x!==''&&Number.isFinite(Number(x))?Number(x):x;},click=letter=>launch('event_whenthisspriteclicked',null,p.targets.find(t=>t.name===`答案${letter}`));
 launch('event_whenflagclicked');
+// Let green-flag handlers initialize before inspecting values saved by mBlock.
+until(()=>now>=1/30);
 for(let level=1;level<=3;level++){
+ const failureMode=!!stage.broadcasts['level-retry'];
+ if(failureMode){
+  for(let n=0;n<2;n++){until(()=>state('game-level')===level&&state('quiz-click-ready')===1);click(get(robot,'y~RTTqq3ZyBb*3!4k!}~'));until(()=>state('%z6KO!=AV03bkJsGH`QJ')===n+1);}
+  until(()=>state('quiz-click-ready')===1);let correct=get(robot,'y~RTTqq3ZyBb*3!4k!}~');click(correct==='A'?'B':'A');until(()=>state('game-phase')===0);
+  until(()=>state('quiz-click-ready')===1);assert.equal(state('game-level'),level);assert.equal(state('%z6KO!=AV03bkJsGH`QJ'),0);assert.equal(state('mature-tree-count'),0);assert.equal(state('saxaul-landed-count'),0);assert.equal(state('seedling-handoff-completed'),0);
+  // A second failure immediately after restart must also remain on this level.
+  correct=get(robot,'y~RTTqq3ZyBb*3!4k!}~');click(correct==='A'?'B':'A');until(()=>state('game-phase')===0);until(()=>state('quiz-click-ready')===1);assert.equal(state('game-level'),level);assert.equal(state('%z6KO!=AV03bkJsGH`QJ'),0);
+  console.log(`PASS level ${level}: wrong third answer resets progress to question 1; repeated failure retains current level.`);
+ }
  const seen=new Set();
  for(let n=0;n<5;n++){
   until(()=>state('game-level')===level&&Number(state('quiz-click-ready'))===1);
   const question=get(robot,'E+%ar3|qW:DZjq^qGmWZ');assert(!seen.has(question));seen.add(question);
   assert(list(stage,'game-pool').includes(question));
   const answer=get(robot,'y~RTTqq3ZyBb*3!4k!}~');
-  if(n===0){click(answer==='A'?'B':'A');until(()=>Number(state('quiz-click-ready'))===0);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),n);until(()=>Number(state('quiz-click-ready'))===1);}
+  if(n===0&&!failureMode){click(answer==='A'?'B':'A');until(()=>Number(state('quiz-click-ready'))===0);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),n);until(()=>Number(state('quiz-click-ready'))===1);}
   click(answer);until(()=>Number(state('quiz-click-ready'))===0);
   // A second answer during the locked interval must not replace the choice.
   click(answer==='A'?'B':'A');until(()=>Number(state('%z6KO!=AV03bkJsGH`QJ'))===n+1);assert.equal(state('quiz-click-choice'),answer);
