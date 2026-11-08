@@ -1,0 +1,62 @@
+[
+  {
+    "level": 1,
+    "name": "梭梭",
+    "slug": "saxaul",
+    "region": "内蒙古阿拉善右旗；甘肃民勤"
+  },
+  {
+    "level": 2,
+    "name": "柽柳（红柳）",
+    "slug": "tamarisk",
+    "region": "新疆塔克拉玛干沙漠公路沿线"
+  },
+  {
+    "level": 3,
+    "name": "沙拐枣",
+    "slug": "calligonum",
+    "region": "新疆塔克拉玛干；宁夏中卫沙坡头；甘肃民勤"
+  },
+  {
+    "level": 4,
+    "name": "花棒",
+    "slug": "hedysarum-scoparium",
+    "region": "宁夏中卫沙坡头；甘肃民勤；青海都兰"
+  },
+  {
+    "level": 5,
+    "name": "柠条",
+    "slug": "caragana",
+    "region": "宁夏中卫沙坡头；内蒙古鄂尔多斯乌审旗；青海都兰"
+  },
+  {
+    "level": 6,
+    "name": "白刺",
+    "slug": "nitraria",
+    "region": "青海柴达木盆地，包括都兰"
+  },
+  {
+    "level": 7,
+    "name": "沙柳",
+    "slug": "sand-willow",
+    "region": "内蒙古鄂尔多斯乌审旗、毛乌素沙地"
+  },
+  {
+    "level": 8,
+    "name": "杨柴（羊柴）",
+    "slug": "hedysarum-mongolicum",
+    "region": "内蒙古鄂尔多斯乌审旗、毛乌素沙地"
+  },
+  {
+    "level": 9,
+    "name": "油蒿",
+    "slug": "artemisia",
+    "region": "宁夏中卫沙坡头"
+  },
+  {
+    "level": 10,
+    "name": "沙冬青",
+    "slug": "ammopiptanthus",
+    "region": "甘肃民勤；巴丹吉林与腾格里沙漠边缘"
+  }
+]

@@ -90,6 +90,10 @@ for(let level=1;level<=totalLevels;level++){
  const seen=new Set();
  for(let n=0;n<5;n++){
   until(()=>state('game-level')===level&&Number(state('quiz-click-ready'))===1);
+  if(stage.lists['game-plant-names']){
+   assert.equal(state('game-plant-name'),list(stage,'game-plant-names')[level-1]);
+   for(const plant of p.targets.filter(t=>/^植物[1-5]$/.test(t.name)))assert.equal(plant.currentCostume,(level-1)*2);
+  }
   const question=get(robot,'E+%ar3|qW:DZjq^qGmWZ');assert(!seen.has(question));seen.add(question);
   const expectedPool=list(stage,`level-bank-${level}`);
   assert.deepEqual(list(stage,'game-pool'),expectedPool);
@@ -101,6 +105,7 @@ for(let level=1;level<=totalLevels;level++){
   click(answer==='A'?'B':'A');until(()=>Number(state('%z6KO!=AV03bkJsGH`QJ'))===n+1);assert.equal(state('quiz-click-choice'),answer);
  }
  until(()=>state('game-phase')===2);assert.equal(Number(state('mature-tree-count')),5);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),5);
+ if(stage.lists['game-plant-names'])for(const plant of p.targets.filter(t=>/^植物[1-5]$/.test(t.name))){assert.equal(plant.currentCostume,level*2-1);assert.equal(plant.y,-120);assert.equal(plant.costumes[plant.currentCostume].name,`成熟-${list(stage,'game-plant-names')[level-1]}`);}
  until(()=>p.targets.find(t=>t.name==='关卡继续按钮').visible&&p.targets.find(t=>t.name==='关卡标题').currentCostume===level-1);
  assert.equal(p.targets.find(t=>t.name==='关卡继续按钮').costumes[p.targets.find(t=>t.name==='关卡继续按钮').currentCostume].name,level===totalLevels?'重新挑战':'下一关');
  console.log(`PASS level ${level}: five distinct themed questions, wrong-answer retry, click lock, five mature trees.`);
