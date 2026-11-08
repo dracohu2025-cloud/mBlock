@@ -55,6 +55,7 @@ function* run(t,id){while(id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);swi
  case 'looks_setsizeto':t.size=Number(I('SIZE'));break;
  case 'looks_changesizeby':t.size+=Number(I('CHANGE'));break;
  case 'looks_switchcostumeto':{const c=I('COSTUME');const byName=t.costumes.findIndex(x=>x.name===c);t.currentCostume=byName>=0?byName:(Number(c)-1)%t.costumes.length;}break;
+ case 'looks_switchbackdropto':{const c=I('BACKDROP');const byName=stage.costumes.findIndex(x=>x.name===c);stage.currentCostume=byName>=0?byName:(Number(c)-1)%stage.costumes.length;}break;
  case 'looks_say':break;
  case 'looks_sayforsecs':yield Number(I('SECS'));break;
  case 'motion_gotoxy':t.x=Number(I('X'));t.y=Number(I('Y'));break;
@@ -77,12 +78,13 @@ launch('event_whenflagclicked');
 until(()=>now>=1/30);
 const totalLevels=Number(stage.variables['game-total-levels']?.[1] || 3);
 assert.equal(p.targets.find(t=>t.name==='关卡标题').costumes.length,totalLevels);
+const checkDesert=level=>{if(!stage.lists['game-desert-names'])return;assert.equal(stage.costumes.length,totalLevels);assert.equal(stage.currentCostume,level-1);const name=list(stage,'game-desert-names')[level-1];assert.equal(state('game-desert-name'),name);assert.equal(stage.costumes[stage.currentCostume].name,name);};
 for(let level=1;level<=totalLevels;level++){
  const failureMode=!!stage.broadcasts['level-retry'];
  if(failureMode){
   for(let n=0;n<2;n++){until(()=>state('game-level')===level&&state('quiz-click-ready')===1);click(get(robot,'y~RTTqq3ZyBb*3!4k!}~'));until(()=>state('%z6KO!=AV03bkJsGH`QJ')===n+1);}
   until(()=>state('quiz-click-ready')===1);let correct=get(robot,'y~RTTqq3ZyBb*3!4k!}~');click(correct==='A'?'B':'A');until(()=>state('game-phase')===0);
-  until(()=>state('quiz-click-ready')===1);assert.equal(state('game-level'),level);assert.equal(state('%z6KO!=AV03bkJsGH`QJ'),0);assert.equal(state('mature-tree-count'),0);assert.equal(state('saxaul-landed-count'),0);assert.equal(state('seedling-handoff-completed'),0);
+  until(()=>state('quiz-click-ready')===1);assert.equal(state('game-level'),level);assert.equal(state('%z6KO!=AV03bkJsGH`QJ'),0);assert.equal(state('mature-tree-count'),0);assert.equal(state('saxaul-landed-count'),0);assert.equal(state('seedling-handoff-completed'),0);checkDesert(level);
   // A second failure immediately after restart must also remain on this level.
   correct=get(robot,'y~RTTqq3ZyBb*3!4k!}~');click(correct==='A'?'B':'A');until(()=>state('game-phase')===0);until(()=>state('quiz-click-ready')===1);assert.equal(state('game-level'),level);assert.equal(state('%z6KO!=AV03bkJsGH`QJ'),0);
   console.log(`PASS level ${level}: wrong third answer resets progress to question 1; repeated failure retains current level.`);
@@ -90,6 +92,7 @@ for(let level=1;level<=totalLevels;level++){
  const seen=new Set();
  for(let n=0;n<5;n++){
   until(()=>state('game-level')===level&&Number(state('quiz-click-ready'))===1);
+  checkDesert(level);
   if(stage.lists['game-plant-names']){
    assert.equal(state('game-plant-name'),list(stage,'game-plant-names')[level-1]);
    for(const plant of p.targets.filter(t=>/^植物[1-5]$/.test(t.name)))assert.equal(plant.currentCostume,(level-1)*2);
@@ -105,10 +108,11 @@ for(let level=1;level<=totalLevels;level++){
   click(answer==='A'?'B':'A');until(()=>Number(state('%z6KO!=AV03bkJsGH`QJ'))===n+1);assert.equal(state('quiz-click-choice'),answer);
  }
  until(()=>state('game-phase')===2);assert.equal(Number(state('mature-tree-count')),5);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),5);
+ checkDesert(level);
  if(stage.lists['game-plant-names'])for(const plant of p.targets.filter(t=>/^植物[1-5]$/.test(t.name))){assert.equal(plant.currentCostume,level*2-1);assert.equal(plant.y,-120);assert.equal(plant.costumes[plant.currentCostume].name,`成熟-${list(stage,'game-plant-names')[level-1]}`);}
  until(()=>p.targets.find(t=>t.name==='关卡继续按钮').visible&&p.targets.find(t=>t.name==='关卡标题').currentCostume===level-1);
  assert.equal(p.targets.find(t=>t.name==='关卡继续按钮').costumes[p.targets.find(t=>t.name==='关卡继续按钮').currentCostume].name,level===totalLevels?'重新挑战':'下一关');
  console.log(`PASS level ${level}: five distinct themed questions, wrong-answer retry, click lock, five mature trees.`);
  launch('event_whenthisspriteclicked',null,p.targets.find(t=>t.name==='关卡继续按钮'));until(()=>state('game-phase')===0);
 }
-until(()=>state('game-level')===1&&Number(state('quiz-click-ready'))===1);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),0);assert.equal(Number(state('mature-tree-count')),0);console.log('PASS replay resets level, input and trees.');
+until(()=>state('game-level')===1&&Number(state('quiz-click-ready'))===1);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),0);assert.equal(Number(state('mature-tree-count')),0);checkDesert(1);console.log('PASS replay resets level, input, trees and backdrop.');

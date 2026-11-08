@@ -1,0 +1,62 @@
+[
+  {
+    "level": 1,
+    "name": "金色沙海",
+    "slug": "golden-dunes",
+    "description": "Existing original golden sand dune background"
+  },
+  {
+    "level": 2,
+    "name": "红岩沙漠",
+    "slug": "red-mesas",
+    "description": "Warm terracotta-red sand, distant layered red sandstone mesas and broad buttes with flat tops and a couple of slim rock spires, vivid turquoise morning sky with a few small clouds. Strongly distinctive red sandstone desert, not rounded golden dunes."
+  },
+  {
+    "level": 3,
+    "name": "月牙沙丘",
+    "slug": "crescent-dunes",
+    "description": "Pale honey-orange sand, enormous elegant crescent barchan dunes with sweeping crescent ridgelines and deep curved hollows in the middle distance, light blue windy sky with long thin clouds. Clearly crescent dune silhouettes and broad open space."
+  },
+  {
+    "level": 4,
+    "name": "岩丘荒漠",
+    "slug": "rocky-hills",
+    "description": "Warm peach sandy foreground, dramatic distant smooth dome-shaped ochre rock hills and rounded granite outcrops, balanced group of distinct low bare rock domes with no sharp mesas, pale aqua afternoon sky with fluffy small clouds."
+  },
+  {
+    "level": 5,
+    "name": "黑石戈壁",
+    "slug": "black-gobi",
+    "description": "Flat pale beige fine sand foreground kept completely empty, distant dark charcoal and plum-black low eroded rocky mountains with dark gravel plains in the middle distance, bright light blue sky. Broad low horizon and clearly black rocky Gobi landscape, no rocks in foreground."
+  },
+  {
+    "level": 6,
+    "name": "盐滩荒漠",
+    "slug": "salt-desert",
+    "description": "Very pale ivory salt-flat desert, softly drawn polygonal salt crust only in far middle distance, distant lavender barren mountains and pale apricot sand banks, clear pale blue sky. Foreground is empty warm cream sand suitable for planting in this educational fantasy game; no water or green."
+  },
+  {
+    "level": 7,
+    "name": "白沙沙漠",
+    "slug": "white-dunes",
+    "description": "Luminous ivory-white gypsum sand dunes with gentle rolling ridges across the middle distance, crystal clear cyan blue sky with three wispy white clouds. Clean white sandy foreground, a beautiful high-key white desert clearly distinct from gold/orange landscapes."
+  },
+  {
+    "level": 8,
+    "name": "峡谷沙漠",
+    "slug": "desert-canyon",
+    "description": "Wide warm amber sandy basin foreground, distant tall stratified sandstone canyon walls framing far left and far right, a receding wide canyon gap in the center, layers of burnt orange cliffs with golden edges. Blue-violet sunny sky visible above, no rocks or cliff edges in foreground."
+  },
+  {
+    "level": 9,
+    "name": "落日沙海",
+    "slug": "sunset-dunes",
+    "description": "Golden-coral sand dune desert at sunset, orange sun close to the distant horizon right of center, sweeping low dunes rim-lit by warm sunset, soft peach-pink and lilac sky. Foreground is flat light warm apricot sand, bright enough for green plants and robot. No dark cast shadows in foreground."
+  },
+  {
+    "level": 10,
+    "name": "星夜沙漠",
+    "slug": "starlit-desert",
+    "description": "Magical peaceful desert at blue hour night, deep indigo-purple sky with sparse tiny stars and small crescent moon high at right, distant soft blue and violet dune ridges. Foreground is flat muted warm beige moonlit sand, well illuminated and readable, not black. No shadows in foreground, no plants or buildings."
+  }
+]
