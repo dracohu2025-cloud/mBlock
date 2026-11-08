@@ -75,7 +75,9 @@ const state=id=>{const x=get(stage,id);return x!==''&&Number.isFinite(Number(x))
 launch('event_whenflagclicked');
 // Let green-flag handlers initialize before inspecting values saved by mBlock.
 until(()=>now>=1/30);
-for(let level=1;level<=3;level++){
+const totalLevels=Number(stage.variables['game-total-levels']?.[1] || 3);
+assert.equal(p.targets.find(t=>t.name==='关卡标题').costumes.length,totalLevels);
+for(let level=1;level<=totalLevels;level++){
  const failureMode=!!stage.broadcasts['level-retry'];
  if(failureMode){
   for(let n=0;n<2;n++){until(()=>state('game-level')===level&&state('quiz-click-ready')===1);click(get(robot,'y~RTTqq3ZyBb*3!4k!}~'));until(()=>state('%z6KO!=AV03bkJsGH`QJ')===n+1);}
@@ -89,7 +91,9 @@ for(let level=1;level<=3;level++){
  for(let n=0;n<5;n++){
   until(()=>state('game-level')===level&&Number(state('quiz-click-ready'))===1);
   const question=get(robot,'E+%ar3|qW:DZjq^qGmWZ');assert(!seen.has(question));seen.add(question);
-  assert(list(stage,'game-pool').includes(question));
+  const expectedPool=list(stage,`level-bank-${level}`);
+  assert.deepEqual(list(stage,'game-pool'),expectedPool);
+  assert(expectedPool.includes(question));
   const answer=get(robot,'y~RTTqq3ZyBb*3!4k!}~');
   if(n===0&&!failureMode){click(answer==='A'?'B':'A');until(()=>Number(state('quiz-click-ready'))===0);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),n);until(()=>Number(state('quiz-click-ready'))===1);}
   click(answer);until(()=>Number(state('quiz-click-ready'))===0);
@@ -97,6 +101,8 @@ for(let level=1;level<=3;level++){
   click(answer==='A'?'B':'A');until(()=>Number(state('%z6KO!=AV03bkJsGH`QJ'))===n+1);assert.equal(state('quiz-click-choice'),answer);
  }
  until(()=>state('game-phase')===2);assert.equal(Number(state('mature-tree-count')),5);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),5);
+ until(()=>p.targets.find(t=>t.name==='关卡继续按钮').visible&&p.targets.find(t=>t.name==='关卡标题').currentCostume===level-1);
+ assert.equal(p.targets.find(t=>t.name==='关卡继续按钮').costumes[p.targets.find(t=>t.name==='关卡继续按钮').currentCostume].name,level===totalLevels?'重新挑战':'下一关');
  console.log(`PASS level ${level}: five distinct themed questions, wrong-answer retry, click lock, five mature trees.`);
  launch('event_whenthisspriteclicked',null,p.targets.find(t=>t.name==='关卡继续按钮'));until(()=>state('game-phase')===0);
 }
