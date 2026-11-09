@@ -7,6 +7,7 @@ const zip=await JSZip.loadAsync(await fs.readFile(process.argv[2] || 'mblock-pro
 const p=JSON.parse(await zip.file('project.json').async('string')),stage=p.targets.find(t=>t.isStage),robot=p.targets.find(t=>t.name==='蓝豆机器人');
 const STOP=Symbol('stop-script');
 let now=0,threads=[],seed=12345;
+const fireworks=p.targets.find(t=>t.name==='通关烟花'),fireworkRuns=[],fireworkFrames=[];
 const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/2**32;};
 const get=(t,id)=>(t.variables[id]||stage.variables[id])[1];
 const set=(t,id,v)=>{(t.variables[id]||stage.variables[id])[1]=v;};
@@ -33,7 +34,9 @@ function value(t,id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);switch(b.opc
  case 'looks_costume':return b.fields.COSTUME[0];
  default:throw Error(`Unknown reporter ${b.opcode}`);
 }}
-function launch(op,broadcast,target){for(const t of p.targets.filter(t=>!target||t===target))for(const [id,b] of Object.entries(t.blocks))if(b.opcode===op&&(!broadcast||b.fields.BROADCAST_OPTION?.[1]===broadcast)){
+function launch(op,broadcast,target){
+ if(op==='event_whenbroadcastreceived'&&broadcast==='final-fireworks')fireworkRuns.push({time:now,level:Number(get(stage,'game-level')),mature:Number(get(stage,'mature-tree-count')),phase:Number(get(stage,'game-phase'))});
+ for(const t of p.targets.filter(t=>!target||t===target))for(const [id,b] of Object.entries(t.blocks))if(b.opcode===op&&(!broadcast||b.fields.BROADCAST_OPTION?.[1]===broadcast)){
  const key=t.name+':'+id;threads=threads.filter(x=>x.key!==key);threads.push({key,t,g:run(t,b.next),wake:now});
 }}
 function* run(t,id){while(id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);switch(b.opcode){
@@ -54,7 +57,7 @@ function* run(t,id){while(id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);swi
  case 'looks_hide':t.visible=false;break;
  case 'looks_setsizeto':t.size=Number(I('SIZE'));break;
  case 'looks_changesizeby':t.size+=Number(I('CHANGE'));break;
- case 'looks_switchcostumeto':{const c=I('COSTUME');const byName=t.costumes.findIndex(x=>x.name===c);t.currentCostume=byName>=0?byName:(Number(c)-1)%t.costumes.length;}break;
+ case 'looks_switchcostumeto':{const c=I('COSTUME');const byName=t.costumes.findIndex(x=>x.name===c);t.currentCostume=byName>=0?byName:(Number(c)-1)%t.costumes.length;if(t===fireworks)fireworkFrames.push({time:now,frame:t.currentCostume});}break;
  case 'looks_switchbackdropto':{const c=I('BACKDROP');const byName=stage.costumes.findIndex(x=>x.name===c);stage.currentCostume=byName>=0?byName:(Number(c)-1)%stage.costumes.length;}break;
  case 'looks_say':break;
  case 'looks_sayforsecs':yield Number(I('SECS'));break;
@@ -107,7 +110,14 @@ for(let level=1;level<=totalLevels;level++){
   // A second answer during the locked interval must not replace the choice.
   click(answer==='A'?'B':'A');until(()=>Number(state('%z6KO!=AV03bkJsGH`QJ'))===n+1);assert.equal(state('quiz-click-choice'),answer);
  }
+ if(fireworks&&level===totalLevels){
+  until(()=>fireworks.visible);assert.equal(state('game-phase'),3);assert.equal(state('mature-tree-count'),5);assert.equal(state('fireworks-finished'),0);
+  const next=p.targets.find(t=>t.name==='关卡继续按钮');assert.equal(next.visible,false);
+  const started=now;launch('event_whenthisspriteclicked',null,next);until(()=>now>=started+.5);
+  assert.equal(state('game-phase'),3);assert.equal(state('game-next'),0);assert.equal(next.visible,false);assert.equal(fireworks.visible,true);
+ }
  until(()=>state('game-phase')===2);assert.equal(Number(state('mature-tree-count')),5);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),5);
+ if(fireworks){assert.equal(fireworkRuns.length,level===totalLevels?1:0);assert.equal(fireworks.visible,false);if(level===totalLevels){assert.equal(state('fireworks-finished'),1);assert(now-fireworkRuns[0].time>=3);}}
  checkDesert(level);
  if(stage.lists['game-plant-names'])for(const plant of p.targets.filter(t=>/^植物[1-5]$/.test(t.name))){assert.equal(plant.currentCostume,level*2-1);assert.equal(plant.y,-120);assert.equal(plant.costumes[plant.currentCostume].name,`成熟-${list(stage,'game-plant-names')[level-1]}`);}
  until(()=>p.targets.find(t=>t.name==='关卡继续按钮').visible&&p.targets.find(t=>t.name==='关卡标题').currentCostume===level-1);
@@ -116,3 +126,10 @@ for(let level=1;level<=totalLevels;level++){
  launch('event_whenthisspriteclicked',null,p.targets.find(t=>t.name==='关卡继续按钮'));until(()=>state('game-phase')===0);
 }
 until(()=>state('game-level')===1&&Number(state('quiz-click-ready'))===1);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),0);assert.equal(Number(state('mature-tree-count')),0);checkDesert(1);console.log('PASS replay resets level, input, trees and backdrop.');
+if(fireworks){
+ assert.deepEqual(fireworkRuns.map(({level,mature,phase})=>({level,mature,phase})),[{level:totalLevels,mature:5,phase:3}]);
+ assert.deepEqual(fireworkFrames.map(x=>x.frame),Array.from({length:72},(_,i)=>i));
+ for(let i=1;i<fireworkFrames.length;i++)assert(Math.abs(fireworkFrames[i].time-fireworkFrames[i-1].time-1/24)<1e-6);
+ assert.equal(fireworks.visible,false);assert.equal(state('fireworks-finished'),0);
+ console.log('PASS final fireworks: only after five mature plants in final level; 72 frames at 24fps; replay locked during animation and reset afterwards.');
+}
