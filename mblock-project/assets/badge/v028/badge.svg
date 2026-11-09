@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+<defs><linearGradient id="gold" x2="0.8" y2="1"><stop stop-color="#fff3b0"/><stop offset=".48" stop-color="#f6c958"/><stop offset="1" stop-color="#d78c24"/></linearGradient><linearGradient id="green" x2="0" y2="1"><stop stop-color="#237c65"/><stop offset="1" stop-color="#124e43"/></linearGradient></defs>
+<path d="M56 121 43 181 67 171 82 188 94 133M106 133 118 188 133 171 157 181 144 121" fill="#249b79" stroke="#0e6957" stroke-width="3" stroke-linejoin="round"/>
+<path d="m63 139-10 33m83-33 10 33" stroke="#a5ecd0" stroke-width="4"/>
+<circle cx="100" cy="83" r="69" fill="url(#gold)" stroke="#b77b25" stroke-width="3"/>
+<circle cx="100" cy="83" r="60" fill="url(#green)" stroke="#fff0a0" stroke-width="3"/>
+<circle cx="100" cy="83" r="53" fill="none" stroke="#e2bf62" stroke-width="1" stroke-dasharray="2 4"/>
+<path d="M99 96V65m0 18-17-12m17 4 17-14" fill="none" stroke="#f8df8a" stroke-width="5" stroke-linecap="round"/>
+<path d="M98 72C79 77 69 62 72 48c18-1 28 9 26 24M101 64c-2-19 11-30 27-28 0 17-11 29-27 28M98 85C80 90 73 80 74 70c13-2 23 3 24 15M104 80c-1-14 9-22 22-21 0 13-9 22-22 21" fill="#a4e09a" stroke="#e8f5af" stroke-width="1.5"/>
+<path d="M73 102q27-14 54 0" fill="none" stroke="#edcf7a" stroke-width="4" stroke-linecap="round"/>
+<text x="100" y="123" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="12" font-weight="600" fill="#fff3b5">十关通关</text>
+<path d="M15 133q85-15 170 0v32q-85-14-170 0Z" fill="#fff0c1" stroke="#b88632" stroke-width="2.5"/>
+<text x="100" y="153" text-anchor="middle" font-family="PingFang SC, sans-serif" font-size="16" font-weight="700" fill="#175e4d">沙漠绿洲守护者</text>
+<path d="m24 40 3 7 8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1Zm151-16 2 5 6 1-5 4 2 6-5-3-6 3 2-6-5-4 6-1Z" fill="#ffe398" stroke="#b88632" stroke-width="1"/>
+</svg>

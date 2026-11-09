@@ -8,6 +8,7 @@ const p=JSON.parse(await zip.file('project.json').async('string')),stage=p.targe
 const STOP=Symbol('stop-script');
 let now=0,threads=[],seed=12345;
 const fireworks=p.targets.find(t=>t.name==='通关烟花'),fireworkRuns=[],fireworkFrames=[];
+const badge=p.targets.find(t=>t.name==='通关徽章'),badgeAwards=[];
 const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/2**32;};
 const get=(t,id)=>(t.variables[id]||stage.variables[id])[1];
 const set=(t,id,v)=>{(t.variables[id]||stage.variables[id])[1]=v;};
@@ -36,6 +37,7 @@ function value(t,id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);switch(b.opc
 }}
 function launch(op,broadcast,target){
  if(op==='event_whenbroadcastreceived'&&broadcast==='final-fireworks')fireworkRuns.push({time:now,level:Number(get(stage,'game-level')),mature:Number(get(stage,'mature-tree-count')),phase:Number(get(stage,'game-phase'))});
+ if(op==='event_whenbroadcastreceived'&&broadcast==='victory-badge')badgeAwards.push({level:Number(get(stage,'game-level')),mature:Number(get(stage,'mature-tree-count')),fireworksDone:Number(get(stage,'fireworks-finished'))});
  for(const t of p.targets.filter(t=>!target||t===target))for(const [id,b] of Object.entries(t.blocks))if(b.opcode===op&&(!broadcast||b.fields.BROADCAST_OPTION?.[1]===broadcast)){
  const key=t.name+':'+id;threads=threads.filter(x=>x.key!==key);threads.push({key,t,g:run(t,b.next),wake:now});
 }}
@@ -95,6 +97,7 @@ for(let level=1;level<=totalLevels;level++){
  const seen=new Set();
  for(let n=0;n<5;n++){
   until(()=>state('game-level')===level&&Number(state('quiz-click-ready'))===1);
+  if(badge)assert.equal(badge.visible,false,'Badge must stay hidden while answering or retrying');
   checkDesert(level);
   if(stage.lists['game-plant-names']){
    assert.equal(state('game-plant-name'),list(stage,'game-plant-names')[level-1]);
@@ -112,6 +115,7 @@ for(let level=1;level<=totalLevels;level++){
  }
  if(fireworks&&level===totalLevels){
   until(()=>fireworks.visible);assert.equal(state('game-phase'),3);assert.equal(state('mature-tree-count'),5);assert.equal(state('fireworks-finished'),0);
+  if(badge)assert.equal(badge.visible,false,'Award follows fireworks');
   const next=p.targets.find(t=>t.name==='关卡继续按钮');assert.equal(next.visible,false);
   const started=now;launch('event_whenthisspriteclicked',null,next);until(()=>now>=started+.5);
   assert.equal(state('game-phase'),3);assert.equal(state('game-next'),0);assert.equal(next.visible,false);assert.equal(fireworks.visible,true);
@@ -121,6 +125,7 @@ for(let level=1;level<=totalLevels;level++){
  checkDesert(level);
  if(stage.lists['game-plant-names'])for(const plant of p.targets.filter(t=>/^植物[1-5]$/.test(t.name))){assert.equal(plant.currentCostume,level*2-1);assert.equal(plant.y,-120);assert.equal(plant.costumes[plant.currentCostume].name,`成熟-${list(stage,'game-plant-names')[level-1]}`);}
  until(()=>p.targets.find(t=>t.name==='关卡继续按钮').visible&&p.targets.find(t=>t.name==='关卡标题').currentCostume===level-1);
+ if(badge){if(level===totalLevels)until(()=>badge.visible);else assert.equal(badge.visible,false);assert.equal(badgeAwards.length,level===totalLevels?1:0);}
  assert.equal(p.targets.find(t=>t.name==='关卡继续按钮').costumes[p.targets.find(t=>t.name==='关卡继续按钮').currentCostume].name,level===totalLevels?'重新挑战':'下一关');
  console.log(`PASS level ${level}: five distinct themed questions, wrong-answer retry, click lock, five mature trees.`);
  launch('event_whenthisspriteclicked',null,p.targets.find(t=>t.name==='关卡继续按钮'));until(()=>state('game-phase')===0);
@@ -133,3 +138,4 @@ if(fireworks){
  assert.equal(fireworks.visible,false);assert.equal(state('fireworks-finished'),0);
  console.log('PASS final fireworks: only after five mature plants in final level; 72 frames at 24fps; replay locked during animation and reset afterwards.');
 }
+if(badge){assert.deepEqual(badgeAwards,[{level:totalLevels,mature:5,fireworksDone:1}]);assert.equal(badge.visible,false);console.log('PASS badge: awarded once after final growth and fireworks; hidden in earlier levels, retries and replay.');}
