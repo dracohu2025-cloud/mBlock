@@ -97,7 +97,7 @@ for(let level=1;level<=totalLevels;level++){
  const seen=new Set();
  for(let n=0;n<5;n++){
   until(()=>state('game-level')===level&&Number(state('quiz-click-ready'))===1);
-  if(robot.blocks['quiz-reading-position']){assert.equal(robot.x,-160);assert.equal(robot.y,-85);}
+  if(robot.blocks['quiz-reading-position']){assert.equal(robot.x,-160);assert.equal(robot.y,p.targets.some(t=>t.name==='题目显示锚点')?35:-85);}
   if(badge)assert.equal(badge.visible,false,'Badge must stay hidden while answering or retrying');
   checkDesert(level);
   if(stage.lists['game-plant-names']){
