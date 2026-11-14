@@ -1,0 +1,92 @@
+[
+  {
+    "level": 1,
+    "name": "01 金色沙海·出发",
+    "bpm": 100,
+    "instrument": "marimba",
+    "duration": 9.6,
+    "file": "01.wav",
+    "assetId": "f5050e4a34a9bbc2a160a6638d1fc926"
+  },
+  {
+    "level": 2,
+    "name": "02 红岩沙漠·足迹",
+    "bpm": 110,
+    "instrument": "pluck",
+    "duration": 8.72725,
+    "file": "02.wav",
+    "assetId": "964f347f373f9ea0a944eea1fe5e8f59"
+  },
+  {
+    "level": 3,
+    "name": "03 月牙沙丘·月光",
+    "bpm": 80,
+    "instrument": "bell",
+    "duration": 12,
+    "file": "03.wav",
+    "assetId": "ac5dc1df0e03fbebe3f4598e7ca630c6"
+  },
+  {
+    "level": 4,
+    "name": "04 岩丘荒漠·远行",
+    "bpm": 96,
+    "instrument": "flute",
+    "duration": 10,
+    "file": "04.wav",
+    "assetId": "8ee3b600a6b5a1fca2e8fa230dc97430"
+  },
+  {
+    "level": 5,
+    "name": "05 黑石戈壁·步伐",
+    "bpm": 112,
+    "instrument": "pluck",
+    "duration": 8.5714375,
+    "file": "05.wav",
+    "assetId": "c9c17de0e7cb07e4c8ed2e2120b04c79"
+  },
+  {
+    "level": 6,
+    "name": "06 盐滩荒漠·微风",
+    "bpm": 76,
+    "instrument": "pad",
+    "duration": 12.6315625,
+    "file": "06.wav",
+    "assetId": "780410e600c1e2cd5fb927d667bab842"
+  },
+  {
+    "level": 7,
+    "name": "07 白沙沙漠·晶光",
+    "bpm": 104,
+    "instrument": "bell",
+    "duration": 9.23075,
+    "file": "07.wav",
+    "assetId": "fb188bb1a19e2e26d856dbb454a23c9a"
+  },
+  {
+    "level": 8,
+    "name": "08 峡谷沙漠·回声",
+    "bpm": 108,
+    "instrument": "marimba",
+    "duration": 8.888875,
+    "file": "08.wav",
+    "assetId": "ce5b858642c8aa09ae02279a44c2b7d9"
+  },
+  {
+    "level": 9,
+    "name": "09 落日沙海·暖光",
+    "bpm": 88,
+    "instrument": "guitar",
+    "duration": 10.9090625,
+    "file": "09.wav",
+    "assetId": "9e6a4e6bd6ca2bb9b1ef701817c0634c"
+  },
+  {
+    "level": 10,
+    "name": "10 星夜沙漠·星河",
+    "bpm": 84,
+    "instrument": "celesta",
+    "duration": 11.4285625,
+    "file": "10.wav",
+    "assetId": "cc541f78a4484f7bbbcb2dd6c9fd9889"
+  }
+]

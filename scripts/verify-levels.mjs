@@ -9,6 +9,7 @@ const STOP=Symbol('stop-script');
 let now=0,threads=[],seed=12345;
 const fireworks=p.targets.find(t=>t.name==='通关烟花'),fireworkRuns=[],fireworkFrames=[];
 const badge=p.targets.find(t=>t.name==='通关徽章'),badgeAwards=[];
+const musicEvents=[];
 const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/2**32;};
 const get=(t,id)=>(t.variables[id]||stage.variables[id])[1];
 const set=(t,id,v)=>{(t.variables[id]||stage.variables[id])[1]=v;};
@@ -67,8 +68,9 @@ function* run(t,id){while(id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);swi
  case 'motion_glidesecstoxy':yield Number(I('SECS'));t.x=Number(I('X'));t.y=Number(I('Y'));break;
  case 'motion_pointindirection':t.direction=Number(I('DIRECTION'));break;
  case 'sound_setvolumeto':t.volume=Number(I('VOLUME'));break;
- case 'sound_play':case 'sound_stopallsounds':break;
- case 'sound_playuntildone':yield .1;break;
+ case 'sound_play':break;
+ case 'sound_stopallsounds':if(t===stage&&stage.lists['game-music-names'])musicEvents.push({type:'stop',level:Number(get(stage,'game-level')),mature:Number(get(stage,'mature-tree-count'))});break;
+ case 'sound_playuntildone':if(t===stage&&stage.lists['game-music-names']){const sound=I('SOUND_MENU');assert(t.sounds.some(s=>s.name===sound));musicEvents.push({type:'play',level:Number(get(stage,'game-level')),sound,volume:t.volume});}yield .1;break;
  default:throw Error(`Unknown opcode ${b.opcode}`);
  }id=b.next;}}
 function until(condition){const deadline=now+120;while(!condition()){
@@ -83,7 +85,7 @@ launch('event_whenflagclicked');
 until(()=>now>=1/30);
 const totalLevels=Number(stage.variables['game-total-levels']?.[1] || 3);
 assert.equal(p.targets.find(t=>t.name==='关卡标题').costumes.length,totalLevels);
-const checkDesert=level=>{if(!stage.lists['game-desert-names'])return;assert.equal(stage.costumes.length,totalLevels);assert.equal(stage.currentCostume,level-1);const name=list(stage,'game-desert-names')[level-1];assert.equal(state('game-desert-name'),name);assert.equal(stage.costumes[stage.currentCostume].name,name);};
+const checkDesert=level=>{if(stage.lists['game-music-names']){const played=musicEvents.findLast(e=>e.type==='play');assert(played);assert.equal(played.sound,list(stage,'game-music-names')[level-1]);assert.equal(played.volume,30);}if(!stage.lists['game-desert-names'])return;assert.equal(stage.costumes.length,totalLevels);assert.equal(stage.currentCostume,level-1);const name=list(stage,'game-desert-names')[level-1];assert.equal(state('game-desert-name'),name);assert.equal(stage.costumes[stage.currentCostume].name,name);};
 for(let level=1;level<=totalLevels;level++){
  const failureMode=!!stage.broadcasts['level-retry'];
  if(failureMode){
@@ -122,6 +124,7 @@ for(let level=1;level<=totalLevels;level++){
   assert.equal(state('game-phase'),3);assert.equal(state('game-next'),0);assert.equal(next.visible,false);assert.equal(fireworks.visible,true);
  }
  until(()=>state('game-phase')===2);assert.equal(Number(state('mature-tree-count')),5);assert.equal(Number(state('%z6KO!=AV03bkJsGH`QJ')),5);
+ if(stage.lists['game-music-names'])until(()=>musicEvents.some(e=>e.type==='stop'&&e.level===level&&e.mature===5));
  if(fireworks){assert.equal(fireworkRuns.length,level===totalLevels?1:0);assert.equal(fireworks.visible,false);if(level===totalLevels){assert.equal(state('fireworks-finished'),1);assert(now-fireworkRuns[0].time>=3);}}
  checkDesert(level);
  if(stage.lists['game-plant-names'])for(const plant of p.targets.filter(t=>/^植物[1-5]$/.test(t.name))){assert.equal(plant.currentCostume,level*2-1);assert.equal(plant.y,-120);assert.equal(plant.costumes[plant.currentCostume].name,`成熟-${list(stage,'game-plant-names')[level-1]}`);}
@@ -140,3 +143,4 @@ if(fireworks){
  console.log('PASS final fireworks: only after five mature plants in final level; 72 frames at 24fps; replay locked during animation and reset afterwards.');
 }
 if(badge){assert.deepEqual(badgeAwards,[{level:totalLevels,mature:5,fireworksDone:1}]);assert.equal(badge.visible,false);console.log('PASS badge: awarded once after final growth and fireworks; hidden in earlier levels, retries and replay.');}
+if(stage.lists['game-music-names']){assert.equal(new Set(list(stage,'game-music-names')).size,totalLevels);for(const e of musicEvents.filter(e=>e.type==='play')){assert.equal(e.sound,list(stage,'game-music-names')[e.level-1]);assert.equal(e.volume,30);}console.log('PASS music: ten distinct tracks selected by level, retries retain the current track, volume 30%, growth triggers stop, replay restores level 1 music.');}
