@@ -6,6 +6,10 @@ const file=process.argv[2]||'mblock-project/exports/沙漠绿色公益-握紧铁
 const zip=await JSZip.loadAsync(await fs.readFile(file));
 const p=JSON.parse(await zip.file('project.json').async('string'));
 const robot=p.targets.find(t=>t.name==='蓝豆机器人'),shovel=p.targets.find(t=>t.name==='机器人铁铲');
+if(shovel.blocks['stable-hide-prop']){
+ await import('./verify-stable-planting.mjs');
+ process.exit(0);
+}
 assert.equal(shovel.layerOrder,robot.layerOrder+1);
 for(const [i,c]of robot.costumes.entries()){
  const x=c.rotationCenterX+shovel.lists['shovel-X'][1][i]*2;
