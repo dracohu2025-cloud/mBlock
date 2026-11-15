@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import JSZip from 'jszip';
 const zip=await JSZip.loadAsync(await fs.readFile(process.argv[2] || 'mblock-project/exports/沙漠绿色公益-三关挑战-v020.mblock'));
 const p=JSON.parse(await zip.file('project.json').async('string')),stage=p.targets.find(t=>t.isStage),robot=p.targets.find(t=>t.name==='蓝豆机器人');
+const optionBank=stage.variables['quiz-option-number']?JSON.parse(await fs.readFile('mblock-project/assets/buttons/v042/questions.json','utf8')):null;
 const STOP=Symbol('stop-script');
 let now=0,threads=[],seed=12345;
 const fireworks=p.targets.find(t=>t.name==='通关烟花'),fireworkRuns=[],fireworkFrames=[];
@@ -12,6 +13,7 @@ const badge=p.targets.find(t=>t.name==='通关徽章'),badgeAwards=[];
 const musicEvents=[];
 const walkMoves=[];
 const oasisChanges=[];
+let optionDisplays=0;
 const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/2**32;};
 const get=(t,id)=>(t.variables[id]||stage.variables[id])[1];
 const set=(t,id,v)=>{(t.variables[id]||stage.variables[id])[1]=v;};
@@ -107,6 +109,19 @@ for(let level=1;level<=totalLevels;level++){
  const seen=new Set();
  for(let n=0;n<5;n++){
   until(()=>state('game-level')===level&&Number(state('quiz-click-ready'))===1);
+  if(stage.variables['quiz-option-number']){
+   const number=Number(get(robot,'E+%ar3|qW:DZjq^qGmWZ')),buttons=['A','B'].map(letter=>p.targets.find(t=>t.name===`答案${letter}`));
+   assert.equal(state('quiz-option-number'),number);
+   until(()=>buttons.every(t=>t.visible&&t.currentCostume===number-1));
+   const question=optionBank[number-1];
+   assert.equal(get(robot,'Ls*3*d8|jjq(bUHN*G6-'),question.question);
+   const displayed=String(state('quiz-display-text'));assert(displayed.includes(question.question));assert(!displayed.includes(' A ')&&!displayed.includes(' B ')&&!displayed.includes('点击下方 A 或 B'));
+   for(const [i,letter]of ['A','B'].entries()){
+    assert.equal(buttons[i].costumes[buttons[i].currentCostume].name,`${letter}选项${String(number).padStart(3,'0')}`);
+    assert.equal(list(stage,'quiz-option-'+letter)[number-1],question[letter]);
+   }
+   assert.equal(get(robot,'y~RTTqq3ZyBb*3!4k!}~'),question.answer);optionDisplays++;
+  }
   if(robot.blocks['quiz-reading-position']){assert.equal(robot.x,-160);assert.equal(robot.y,p.targets.some(t=>t.name==='题目显示锚点')?35:-85);}
   if(badge)assert.equal(badge.visible,false,'Badge must stay hidden while answering or retrying');
   checkDesert(level);
@@ -167,3 +182,4 @@ if(robot.lists['walk-poses']){
  console.log(`PASS walking: ${walkMoves.length/24} complete outbound/return paths, eight poses cycling over 24 movement steps, exact destinations, return waits for planting.`);
 }
 if(hasOasis){assert.deepEqual(oasisChanges,[{level:totalLevels,mature:5,phase:3}]);assert.equal(stage.currentCostume,0);console.log('PASS oasis: only after all five final-level plants mature, visible during fireworks and badge; earlier levels/retries stay desert; replay restores first desert.');}
+if(optionDisplays)console.log(`PASS option buttons: ${optionDisplays} quiz displays show matching question-only bubbles and A/B option costumes, with unchanged correct answers.`);
