@@ -12,6 +12,8 @@ const fireworks=p.targets.find(t=>t.name==='通关烟花'),fireworkRuns=[],firew
 const badge=p.targets.find(t=>t.name==='通关徽章'),badgeAwards=[];
 const musicEvents=[];
 const walkMoves=[];
+const staysAtPlant=!!robot.lists['walk-poses']&&!robot.blocks['walk-return-if'];
+let stationaryQuestions=0;
 const oasisChanges=[];
 let optionDisplays=0;
 const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/2**32;};
@@ -73,7 +75,7 @@ function* run(t,id){while(id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);swi
  case 'looks_switchbackdropto':{const c=I('BACKDROP');const byName=stage.costumes.findIndex(x=>x.name===c);stage.currentCostume=byName>=0?byName:(Number(c)-1)%stage.costumes.length;if(stage.costumes[stage.currentCostume].name==='胜利绿洲')oasisChanges.push({level:Number(get(stage,'game-level')),mature:Number(get(stage,'mature-tree-count')),phase:Number(get(stage,'game-phase'))});}break;
  case 'looks_say':break;
  case 'looks_sayforsecs':yield Number(I('SECS'));break;
- case 'motion_gotoxy':t.x=Number(I('X'));t.y=Number(I('Y'));if(t===robot&&/^walk-(out|back)-move$/.test(id))walkMoves.push({direction:id.includes('-out-')?'out':'back',tick:Number(get(t,'walk-tick')),x:t.x,y:t.y,costume:t.costumes[t.currentCostume].name,landed:Number(get(t,'seedling-handoff-completed')),trees:Number(get(t,'%z6KO!=AV03bkJsGH`QJ')),targetX:Number(get(t,'walk-target-x')),targetY:Number(get(t,'walk-target-y'))});break;
+ case 'motion_gotoxy':t.x=Number(I('X'));t.y=Number(I('Y'));if(t===robot&&/^walk-(out|back)-move$/.test(id))walkMoves.push({level:Number(get(stage,'game-level')),direction:id.includes('-out-')?'out':'back',tick:Number(get(t,'walk-tick')),x:t.x,y:t.y,costume:t.costumes[t.currentCostume].name,landed:Number(get(t,'seedling-handoff-completed')),trees:Number(get(t,'%z6KO!=AV03bkJsGH`QJ')),targetX:Number(get(t,'walk-target-x')),targetY:Number(get(t,'walk-target-y'))});break;
  case 'motion_glidesecstoxy':yield Number(I('SECS'));t.x=Number(I('X'));t.y=Number(I('Y'));break;
  case 'motion_pointindirection':t.direction=Number(I('DIRECTION'));break;
  case 'sound_setvolumeto':t.volume=Number(I('VOLUME'));break;
@@ -122,7 +124,12 @@ for(let level=1;level<=totalLevels;level++){
    }
    assert.equal(get(robot,'y~RTTqq3ZyBb*3!4k!}~'),question.answer);optionDisplays++;
   }
-  if(robot.blocks['quiz-reading-position']){assert.equal(robot.x,-160);assert.equal(robot.y,p.targets.some(t=>t.name==='题目显示锚点')?35:-85);}
+  if(staysAtPlant){
+   const point=n===0?{x:-160,y:35}:walkMoves.findLast(m=>m.level===level&&m.direction==='out'&&m.tick===24&&m.trees===n-1);assert(point);
+   assert.equal(robot.x,point.x);assert.equal(robot.y,point.y);assert.equal(state('seedling-handoff-completed'),n);
+   assert.equal(robot.costumes[robot.currentCostume].name,'种树24-01');
+   const started=now,x=robot.x,y=robot.y;until(()=>now>=started+.3);assert.equal(robot.x,x);assert.equal(robot.y,y);assert.equal(state('quiz-click-ready'),1);stationaryQuestions++;
+  }else if(robot.blocks['quiz-reading-position']){assert.equal(robot.x,-160);assert.equal(robot.y,p.targets.some(t=>t.name==='题目显示锚点')?35:-85);}
   if(badge)assert.equal(badge.visible,false,'Badge must stay hidden while answering or retrying');
   checkDesert(level);
   if(stage.lists['game-plant-names']){
@@ -168,7 +175,8 @@ if(fireworks){
 if(badge){assert.deepEqual(badgeAwards,[{level:totalLevels,mature:5,fireworksDone:1}]);assert.equal(badge.visible,false);console.log('PASS badge: awarded once after final growth and fireworks; hidden in earlier levels, retries and replay.');}
 if(stage.lists['game-music-names']){assert.equal(new Set(list(stage,'game-music-names')).size,totalLevels);for(const e of musicEvents.filter(e=>e.type==='play')){assert.equal(e.sound,list(stage,'game-music-names')[e.level-1]);assert.equal(e.volume,30);}console.log('PASS music: ten distinct tracks selected by level, retries retain the current track, volume 30%, growth triggers stop, replay restores level 1 music.');}
 if(robot.lists['walk-poses']){
- assert(walkMoves.some(m=>m.direction==='out')&&walkMoves.some(m=>m.direction==='back'));
+ assert(walkMoves.some(m=>m.direction==='out'));
+ if(staysAtPlant)assert(walkMoves.every(m=>m.direction==='out'));else assert(walkMoves.some(m=>m.direction==='back'));
  assert.equal(walkMoves.length%24,0);
  for(let i=0;i<walkMoves.length;i+=24){
   const path=walkMoves.slice(i,i+24);
@@ -178,8 +186,13 @@ if(robot.lists['walk-poses']){
   if(end.direction==='back')assert(path.every(m=>m.landed===m.trees),'Return must wait until planting is done');
   const dx=path[1].x-path[0].x,dy=path[1].y-path[0].y;
   for(let j=2;j<path.length;j++){assert(Math.abs(path[j].x-path[j-1].x-dx)<1e-8);assert(Math.abs(path[j].y-path[j-1].y-dy)<1e-8);}
+  if(staysAtPlant&&path[0].trees>0){
+   const previous=walkMoves.slice(0,i).findLast(m=>m.level===path[0].level&&m.tick===24&&m.trees===path[0].trees-1);assert(previous);
+   assert(Math.abs(path[0].x-dx-previous.x)<1e-8);assert(Math.abs(path[0].y-dy-previous.y)<1e-8);
+  }
  }
- console.log(`PASS walking: ${walkMoves.length/24} complete outbound/return paths, eight poses cycling over 24 movement steps, exact destinations, return waits for planting.`);
+ console.log(staysAtPlant?`PASS walking: ${walkMoves.length/24} complete onward paths, no return paths, each next walk starts at the previous planted location.`:`PASS walking: ${walkMoves.length/24} complete outbound/return paths, eight poses cycling over 24 movement steps, exact destinations, return waits for planting.`);
 }
+if(staysAtPlant){assert.equal(stationaryQuestions,totalLevels*5);console.log(`PASS stationary answering: ${stationaryQuestions} questions wait at the start/last planted position in idle pose, only after planting finishes; reset/replay still restores the start.`);}
 if(hasOasis){assert.deepEqual(oasisChanges,[{level:totalLevels,mature:5,phase:3}]);assert.equal(stage.currentCostume,0);console.log('PASS oasis: only after all five final-level plants mature, visible during fireworks and badge; earlier levels/retries stay desert; replay restores first desert.');}
 if(optionDisplays)console.log(`PASS option buttons: ${optionDisplays} quiz displays show matching question-only bubbles and A/B option costumes, with unchanged correct answers.`);
