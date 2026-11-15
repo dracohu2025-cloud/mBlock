@@ -32,7 +32,7 @@ for(const letter of ['A','B']){
  }
 }
 assert.deepEqual(r.costumes,old.costumes,'Robot artwork must not change');
-for(const t of p.targets)if(![r.name,'Stage','答案A','答案B'].includes(t.name)){
+for(const t of p.targets)if(![r.name,'Stage','答案A','答案B',...(stage.variables['quiz-panel-frame']?['题目显示锚点','题号显示']:[])].includes(t.name)){
  const o=prior.targets.find(x=>x.name===t.name);assert.deepEqual(t.blocks,o.blocks);assert.deepEqual(t.costumes,o.costumes);
 }
 for(const t of p.targets){for(const c of [...t.costumes,...t.sounds])assert(zip.file(c.md5ext));for(const [id,b]of Object.entries(t.blocks)){

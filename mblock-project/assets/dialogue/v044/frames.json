@@ -1,0 +1,1554 @@
+[
+  {
+    "type": "question",
+    "number": 1,
+    "text": "随手关灯有什么好处？",
+    "index": 1,
+    "asset": "8c35a17f4d32ad32a6011b2bb0db889b.png",
+    "lines": [
+      "随手关灯有什么好处？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 2,
+    "text": "购物时怎样减少塑料袋？",
+    "index": 2,
+    "asset": "b999b68ebd98689ee72e19d34e0cb86d.png",
+    "lines": [
+      "购物时怎样减少塑料袋？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 3,
+    "text": "保护沙漠植物有什么作用？",
+    "index": 3,
+    "asset": "a0d9c34ceb66342f2de86fcf4f23bf70.png",
+    "lines": [
+      "保护沙漠植物有什么作用？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 4,
+    "text": "干净的旧纸张适合怎样处理？",
+    "index": 4,
+    "asset": "c49b783a0cefd74f4617c094d7ec77ce.png",
+    "lines": [
+      "干净的旧纸张适合怎样处理？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 5,
+    "text": "怎样节约用水？",
+    "index": 5,
+    "asset": "935f94597ac992558c3335183c4b7cac.png",
+    "lines": [
+      "怎样节约用水？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 6,
+    "text": "离开教室时应该？",
+    "index": 6,
+    "asset": "69677002f17e8a5b7a5520143ce50da4.png",
+    "lines": [
+      "离开教室时应该？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 7,
+    "text": "外出喝水怎样减少垃圾？",
+    "index": 7,
+    "asset": "cd222e48789c549a038149c310a22e86.png",
+    "lines": [
+      "外出喝水怎样减少垃圾？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 8,
+    "text": "保护野生动物应该？",
+    "index": 8,
+    "asset": "9309f6978b08b307059d4f0a70646d1a.png",
+    "lines": [
+      "保护野生动物应该？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 9,
+    "text": "短距离出行哪种方式更环保？",
+    "index": 9,
+    "asset": "77429cfb076385a73cfbfef16d05ebff.png",
+    "lines": [
+      "短距离出行哪种方式更环保？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 10,
+    "text": "节约纸张可以怎么做？",
+    "index": 10,
+    "asset": "f1fb1d9c8c7f9eab7ed27b3b7b2c5d9c.png",
+    "lines": [
+      "节约纸张可以怎么做？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 11,
+    "text": "看到野外垃圾应该？",
+    "index": 11,
+    "asset": "c0328a9d073265b1ef5e581cdf327dcb.png",
+    "lines": [
+      "看到野外垃圾应该？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 12,
+    "text": "不使用电器时怎样节能？",
+    "index": 12,
+    "asset": "b5d1f33aa044c147f899bd54c6a80aff.png",
+    "lines": [
+      "不使用电器时怎样节能？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 13,
+    "text": "沙漠通常有什么气候特点？",
+    "index": 13,
+    "asset": "4e11466c252969874ddd854ff50102c0.png",
+    "lines": [
+      "沙漠通常有什么气候特点？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 14,
+    "text": "沙漠昼夜温差通常怎样？",
+    "index": 14,
+    "asset": "0919148348a0b0cc0ebca0496e329a70.png",
+    "lines": [
+      "沙漠昼夜温差通常怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 15,
+    "text": "沙漠中的绿洲通常靠近什么？",
+    "index": 15,
+    "asset": "ed47a5b3b1e05ab9285632c7e3200c1f.png",
+    "lines": [
+      "沙漠中的绿洲通常靠近什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 16,
+    "text": "沙漠里哪种植物适应干旱？",
+    "index": 16,
+    "asset": "f9fd1f520034bf15a9b6633076cd60e3.png",
+    "lines": [
+      "沙漠里哪种植物适应干旱？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 17,
+    "text": "植物根系能帮助沙地做什么？",
+    "index": 17,
+    "asset": "a708d3726107c1e7dcd6bf04a7e5c7bb.png",
+    "lines": [
+      "植物根系能帮助沙地做什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 18,
+    "text": "保护沙漠植被有什么作用？",
+    "index": 18,
+    "asset": "598a5b369f73a6bf227a318805953c83.png",
+    "lines": [
+      "保护沙漠植被有什么作用？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 19,
+    "text": "在沙漠旅行时垃圾应如何处理？",
+    "index": 19,
+    "asset": "37f8a3ba89f0e5a2fa526b9b560fb58f.png",
+    "lines": [
+      "在沙漠旅行时垃圾应如何处理？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 20,
+    "text": "沙漠植物为什么珍贵？",
+    "index": 20,
+    "asset": "984f774837b37668a2586a412e599370.png",
+    "lines": [
+      "沙漠植物为什么珍贵？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 21,
+    "text": "哪些行动有助保护沙漠生态？",
+    "index": 21,
+    "asset": "5f15d3a2d168243d04f0c2f5335ba207.png",
+    "lines": [
+      "哪些行动有助保护沙漠生态？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 22,
+    "text": "沙尘暴来临时应该怎么做？",
+    "index": 22,
+    "asset": "7c867c2b1758a25107a31f152b9978a0.png",
+    "lines": [
+      "沙尘暴来临时应该怎么做？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 23,
+    "text": "沙漠中的水资源通常怎样？",
+    "index": 23,
+    "asset": "068ba3f54ce81fc81c6cff22c73562a8.png",
+    "lines": [
+      "沙漠中的水资源通常怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 24,
+    "text": "沙漠里每个地方都是沙丘吗？",
+    "index": 24,
+    "asset": "37cdf5043964d93c0d028da3e1245fbb.png",
+    "lines": [
+      "沙漠里每个地方都是沙丘吗？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 25,
+    "text": "沙丘的形成与什么有关？",
+    "index": 25,
+    "asset": "ea67cdf5e09661308128f6a70a6d1afe.png",
+    "lines": [
+      "沙丘的形成与什么有关？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 26,
+    "text": "沙漠中有动物生存吗？",
+    "index": 26,
+    "asset": "7915611913a71cb981bcba669d1e26fc.png",
+    "lines": [
+      "沙漠中有动物生存吗？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 27,
+    "text": "许多沙漠动物何时更活跃？",
+    "index": 27,
+    "asset": "90081e39f622ff15216fb1f4fd5a679a.png",
+    "lines": [
+      "许多沙漠动物何时更活跃？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 28,
+    "text": "梭梭主要适应什么环境？",
+    "index": 28,
+    "asset": "f0dadcb391de14b19a3b1444f480768c.png",
+    "lines": [
+      "梭梭主要适应什么环境？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 29,
+    "text": "防沙治沙时应优先考虑什么？",
+    "index": 29,
+    "asset": "75dbe4d3f26c1dc1e0f7d009d57c0fc0.png",
+    "lines": [
+      "防沙治沙时应优先考虑什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 30,
+    "text": "在干旱地区种树应选择什么植物？",
+    "index": 30,
+    "asset": "fd887357f218e370acd0a3740f03c484.png",
+    "lines": [
+      "在干旱地区种树应选择什么植物？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 31,
+    "text": "植物覆盖地面能怎样影响风速？",
+    "index": 31,
+    "asset": "1d51fbf64e53b607b04f80ca77a64fc6.png",
+    "lines": [
+      "植物覆盖地面能怎样影响风速？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 32,
+    "text": "沙漠化是指什么？",
+    "index": 32,
+    "asset": "2c539f8211c227f4410961a8f9af8a5b.png",
+    "lines": [
+      "沙漠化是指什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 33,
+    "text": "过度放牧可能带来什么影响？",
+    "index": 33,
+    "asset": "81107e789a55ce5958977093b22109d8.png",
+    "lines": [
+      "过度放牧可能带来什么影响？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 34,
+    "text": "保护沙地时为什么要控制放牧？",
+    "index": 34,
+    "asset": "96cf66076ed8f4c15aa28b2056ebb759.png",
+    "lines": [
+      "保护沙地时为什么要控制放牧？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 35,
+    "text": "沙漠里节水灌溉有什么好处？",
+    "index": 35,
+    "asset": "3003ad001c3332b3cdc494adaecab555.png",
+    "lines": [
+      "沙漠里节水灌溉有什么好处？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 36,
+    "text": "滴灌通常将水送到哪里？",
+    "index": 36,
+    "asset": "fccf95a48327f3bd3360bac21ccfde88.png",
+    "lines": [
+      "滴灌通常将水送到哪里？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 37,
+    "text": "沙漠中植物的枝叶可以为动物提供什么？",
+    "index": 37,
+    "asset": "74ed9b4c0ad57c7e5480a4193e4eb8ff.png",
+    "lines": [
+      "沙漠中植物的枝叶可以为动物提供什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 38,
+    "text": "沙漠生态恢复需要什么？",
+    "index": 38,
+    "asset": "aa2aa8d95ed5f76292c3da67450e982c.png",
+    "lines": [
+      "沙漠生态恢复需要什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 39,
+    "text": "进入自然保护区应当怎样？",
+    "index": 39,
+    "asset": "8459b2340e9b46acd334d420e0548197.png",
+    "lines": [
+      "进入自然保护区应当怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 40,
+    "text": "沙漠地表除了沙子还可能有什么？",
+    "index": 40,
+    "asset": "4aecaf2b00db81703ddc2012cead126a.png",
+    "lines": [
+      "沙漠地表除了沙子还可能有什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 41,
+    "text": "沙漠降雨很少时，植物需要怎样适应？",
+    "index": 41,
+    "asset": "940dd67039b927e9b175a185b817cb1d.png",
+    "lines": [
+      "沙漠降雨很少时，植物需要怎样适应？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 42,
+    "text": "保护沙漠生态需要谁参与？",
+    "index": 42,
+    "asset": "6fe85dc831fdd7c151946f6e07bc6727.png",
+    "lines": [
+      "保护沙漠生态需要谁参与？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 43,
+    "text": "在沙漠遇到野生动物，应该怎样观察？",
+    "index": 43,
+    "asset": "c1741161ea47c1b78659a9710752ed7d.png",
+    "lines": [
+      "在沙漠遇到野生动物，应该怎样观察？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 44,
+    "text": "给沙漠野生动物投喂零食合适吗？",
+    "index": 44,
+    "asset": "14d67211a117d2ee37fd712d66e4582c.png",
+    "lines": [
+      "给沙漠野生动物投喂零食合适吗？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 45,
+    "text": "沙漠里的塑料袋被风吹走后可能怎样？",
+    "index": 45,
+    "asset": "2d6f85b448cfb79a1d5f9ef0f5d8d294.png",
+    "lines": [
+      "沙漠里的塑料袋被风吹走后可能怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 46,
+    "text": "在沙漠景区驾车应该走哪里？",
+    "index": 46,
+    "asset": "eda099b1b7a849735d8fc1a4c5e3c738.png",
+    "lines": [
+      "在沙漠景区驾车应该走哪里？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 47,
+    "text": "发现有人非法采挖沙漠植物，可以怎么做？",
+    "index": 47,
+    "asset": "0e07c560169b2b8e91199e93a17d7e1e.png",
+    "lines": [
+      "发现有人非法采挖沙漠植物，可以怎么做？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 48,
+    "text": "保护绿洲水质应该怎样做？",
+    "index": 48,
+    "asset": "131d076e85e5eee4697ff05b4606c39d.png",
+    "lines": [
+      "保护绿洲水质应该怎样做？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 49,
+    "text": "过量抽取地下水可能带来什么？",
+    "index": 49,
+    "asset": "b103303dc03261035d1b4d7ff0feb756.png",
+    "lines": [
+      "过量抽取地下水可能带来什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 50,
+    "text": "修复沙地时应该关注什么？",
+    "index": 50,
+    "asset": "4c8c8a5e828fa7f5e43434b95c27dd65.png",
+    "lines": [
+      "修复沙地时应该关注什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 51,
+    "text": "在沙漠参加植树活动前应该先做什么？",
+    "index": 51,
+    "asset": "8f0922c011f667f40d739fb8d0f216cd.png",
+    "lines": [
+      "在沙漠参加植树活动前应该先做什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 52,
+    "text": "用过的废电池应该怎样处理？",
+    "index": 52,
+    "asset": "57a451e217c2d288b159b1f6c3d9d6f7.png",
+    "lines": [
+      "用过的废电池应该怎样处理？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 53,
+    "text": "沙漠里的玻璃瓶和金属罐应该怎样处理？",
+    "index": 53,
+    "asset": "444a0ffc2f537ae60acad80024fd3cae.png",
+    "lines": [
+      "沙漠里的玻璃瓶和金属罐应该怎样处理？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 54,
+    "text": "维护植树工具有什么好处？",
+    "index": 54,
+    "asset": "0955048b217c49745f9037cad243e961.png",
+    "lines": [
+      "维护植树工具有什么好处？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 55,
+    "text": "沙漠里的枯枝有什么可能的生态作用？",
+    "index": 55,
+    "asset": "acd4d86a7d10eaa379909454f749581b.png",
+    "lines": [
+      "沙漠里的枯枝有什么可能的生态作用？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 56,
+    "text": "旅行时发现鸟巢应该怎么办？",
+    "index": 56,
+    "asset": "79c753515b165e1a1db42e37f6f42601.png",
+    "lines": [
+      "旅行时发现鸟巢应该怎么办？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 57,
+    "text": "保护沙漠动物的栖息地，有助于什么？",
+    "index": 57,
+    "asset": "42ee01b331dcd0fa73948f4c3ccce5fa.png",
+    "lines": [
+      "保护沙漠动物的栖息地，有助于什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 58,
+    "text": "树苗成活后还需要什么？",
+    "index": 58,
+    "asset": "c403acbbe244f7e8ecc38ade1585527b.png",
+    "lines": [
+      "树苗成活后还需要什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 59,
+    "text": "沙漠植树记录中，哪项信息有帮助？",
+    "index": 59,
+    "asset": "707a2361576d7cd5c461441497aee684.png",
+    "lines": [
+      "沙漠植树记录中，哪项信息有帮助？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 60,
+    "text": "沙漠环保活动结束后应该怎么做？",
+    "index": 60,
+    "asset": "5db64ee9716896187cfac7e12e06dcfe.png",
+    "lines": [
+      "沙漠环保活动结束后应该怎么做？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 61,
+    "text": "为什么不应随意捕捉沙漠昆虫？",
+    "index": 61,
+    "asset": "5ae59a9c6c4016344bb55536971dd06c.png",
+    "lines": [
+      "为什么不应随意捕捉沙漠昆虫？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 62,
+    "text": "向朋友介绍沙漠保护知识时应该怎样？",
+    "index": 62,
+    "asset": "2e22520600fffe51e85bc6a236bb6156.png",
+    "lines": [
+      "向朋友介绍沙漠保护知识时应该怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 63,
+    "text": "巡查灌溉管时发现漏水，应该怎样做？",
+    "index": 63,
+    "asset": "dce0a7f7c0fd043f4a621a5ccc26f94d.png",
+    "lines": [
+      "巡查灌溉管时发现漏水，应该怎样做？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 64,
+    "text": "集雨设施收集的主要是什么水？",
+    "index": 64,
+    "asset": "20d44ffb999ffd264c33407b1d608454.png",
+    "lines": [
+      "集雨设施收集的主要是什么水？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 65,
+    "text": "给树苗浇水前，先检查什么更合理？",
+    "index": 65,
+    "asset": "6990c9e9f1114391264afae53c2d379c.png",
+    "lines": [
+      "给树苗浇水前，先检查什么更合理？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 66,
+    "text": "减少灌溉水蒸发，哪种安排通常更合适？",
+    "index": 66,
+    "asset": "f08495ab7aecac7e843c72ac53f8770b.png",
+    "lines": [
+      "减少灌溉水蒸发，哪种安排通常更合适？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 67,
+    "text": "储水桶配上合适的盖子有什么帮助？",
+    "index": 67,
+    "asset": "b2e17e9d3b7ca44c9c802098455f563e.png",
+    "lines": [
+      "储水桶配上合适的盖子有什么帮助？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 68,
+    "text": "水龙头关不严时应该怎么办？",
+    "index": 68,
+    "asset": "9afd01cd7f63749adbb4663acef5c8d3.png",
+    "lines": [
+      "水龙头关不严时应该怎么办？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 69,
+    "text": "缺水地区安排植被恢复，首先要考虑什么？",
+    "index": 69,
+    "asset": "e8a6dd2c3d30c97cdab2af946b53324d.png",
+    "lines": [
+      "缺水地区安排植被恢复，首先要考虑什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 70,
+    "text": "发现水源有异常颜色或气味，应该怎样？",
+    "index": 70,
+    "asset": "bab042ace6fe4fc3112c266dfb7aa26e.png",
+    "lines": [
+      "发现水源有异常颜色或气味，应该怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 71,
+    "text": "比较两种灌溉方法是否节水，应记录什么？",
+    "index": 71,
+    "asset": "a41be21dab84345b6f312c5976e8e15f.png",
+    "lines": [
+      "比较两种灌溉方法是否节水，应记录什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 72,
+    "text": "旱情出现时，哪种做法更合理？",
+    "index": 72,
+    "asset": "8f0782bb3a50d1c5a57e1f9eb7931b60.png",
+    "lines": [
+      "旱情出现时，哪种做法更合理？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 73,
+    "text": "恢复区已经围栏封育，游客应该怎样？",
+    "index": 73,
+    "asset": "8b263675acec1cc3ab319474bcbb3bf1.png",
+    "lines": [
+      "恢复区已经围栏封育，游客应该怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 74,
+    "text": "幼苗周围设置保护标记有什么用？",
+    "index": 74,
+    "asset": "adc10336c0653b2c221be8c523d1b1e1.png",
+    "lines": [
+      "幼苗周围设置保护标记有什么用？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 75,
+    "text": "看到防护设施被风吹坏，应该怎样？",
+    "index": 75,
+    "asset": "7e22dd37769ea92ec15cfd3b4c9a1b28.png",
+    "lines": [
+      "看到防护设施被风吹坏，应该怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 76,
+    "text": "判断沙地是否需要人工修复，应先做什么？",
+    "index": 76,
+    "asset": "5e0600e0b37551e0c65315f6567f21a5.png",
+    "lines": [
+      "判断沙地是否需要人工修复，应先做什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 77,
+    "text": "保护现有沙地植被时，哪种行为合适？",
+    "index": 77,
+    "asset": "7be24bb313d6eb071eecffd627d3f23f.png",
+    "lines": [
+      "保护现有沙地植被时，哪种行为合适？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 78,
+    "text": "发现风把裸露沙土不断吹走，记录什么有帮助？",
+    "index": 78,
+    "asset": "db9bc3bafca1d5e5dbf103bb045071e0.png",
+    "lines": [
+      "发现风把裸露沙土不断吹走，",
+      "记录什么有帮助？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 79,
+    "text": "恢复区需要暂时限制通行，主要是为了什么？",
+    "index": 79,
+    "asset": "f40daf9af231e9c921318f6cd16cee66.png",
+    "lines": [
+      "恢复区需要暂时限制通行，主要是为了什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 80,
+    "text": "开展沙地保护活动，工具应放在哪里？",
+    "index": 80,
+    "asset": "db7637bf470e24285b7e5a79004cb76c.png",
+    "lines": [
+      "开展沙地保护活动，工具应放在哪里？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 81,
+    "text": "沙地修复要不要保留适应当地的草本植物？",
+    "index": 81,
+    "asset": "02de97047d8bf48d4c567001d5bb0d53.png",
+    "lines": [
+      "沙地修复要不要保留适应当地的草本植物？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 82,
+    "text": "保护沙地的行动应怎样安排？",
+    "index": 82,
+    "asset": "b7b449fe5e94092759689de15c75978e.png",
+    "lines": [
+      "保护沙地的行动应怎样安排？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 83,
+    "text": "沙漠动物的洞穴旁，哪种行为更合适？",
+    "index": 83,
+    "asset": "c090a483a02b48c58c14e84cafafd66f.png",
+    "lines": [
+      "沙漠动物的洞穴旁，哪种行为更合适？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 84,
+    "text": "夜间观察动物应该怎样使用灯光？",
+    "index": 84,
+    "asset": "59f5b5f214364aff4ea1175a7382270c.png",
+    "lines": [
+      "夜间观察动物应该怎样使用灯光？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 85,
+    "text": "发现受伤的野生动物，应怎样处理？",
+    "index": 85,
+    "asset": "c95e31d1358b1d5243f1fc14a635c3dc.png",
+    "lines": [
+      "发现受伤的野生动物，应怎样处理？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 86,
+    "text": "营地食物包装应怎样存放？",
+    "index": 86,
+    "asset": "b19fbf5cd97e20883b46ea3d8a1c8e40.png",
+    "lines": [
+      "营地食物包装应怎样存放？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 87,
+    "text": "动物通行的栖息地被垃圾堵住，应该怎样？",
+    "index": 87,
+    "asset": "39a6672b9f03e7f3da20af00fbd820e1.png",
+    "lines": [
+      "动物通行的栖息地被垃圾堵住，应该怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 88,
+    "text": "拍摄野生动物时遇到它后退，应怎样？",
+    "index": 88,
+    "asset": "9344c1c25211e552581d93ccc10c7d08.png",
+    "lines": [
+      "拍摄野生动物时遇到它后退，应怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 89,
+    "text": "地上发现动物足迹，怎样研究更合适？",
+    "index": 89,
+    "asset": "3400a56237e9ad54234113e0eddabe8f.png",
+    "lines": [
+      "地上发现动物足迹，怎样研究更合适？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 90,
+    "text": "保护沙漠动物时，也需要保护什么？",
+    "index": 90,
+    "asset": "290c402976d6da19f98d29dfcb64e670.png",
+    "lines": [
+      "保护沙漠动物时，也需要保护什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 91,
+    "text": "废弃细绳和塑料圈为什么应收走？",
+    "index": 91,
+    "asset": "dcf4f33f3e5b9041881abef4c5b5f29a.png",
+    "lines": [
+      "废弃细绳和塑料圈为什么应收走？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 92,
+    "text": "观察到不认识的昆虫，应该怎样？",
+    "index": 92,
+    "asset": "b710d7a7abade8babcfaac00495f01f8.png",
+    "lines": [
+      "观察到不认识的昆虫，应该怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 93,
+    "text": "搬运植物幼苗时，怎样保护根部？",
+    "index": 93,
+    "asset": "2d3b8836f2e70247afd501f8ba416578.png",
+    "lines": [
+      "搬运植物幼苗时，怎样保护根部？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 94,
+    "text": "树苗栽植的深浅应怎样确定？",
+    "index": 94,
+    "asset": "4175bbadc5d8acb92b9855fe80f387bc.png",
+    "lines": [
+      "树苗栽植的深浅应怎样确定？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 95,
+    "text": "刚种好的树苗能频繁拔出检查吗？",
+    "index": 95,
+    "asset": "f70fe6f6b12d0f0a3aa3b33d77b630c4.png",
+    "lines": [
+      "刚种好的树苗能频繁拔出检查吗？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 96,
+    "text": "新栽树苗被大风吹歪，应怎样做？",
+    "index": 96,
+    "asset": "c9524e4b14fcc9952a5c19ea5ffac14b.png",
+    "lines": [
+      "新栽树苗被大风吹歪，应怎样做？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 97,
+    "text": "树苗长势较弱时，应先怎样做？",
+    "index": 97,
+    "asset": "77c4798f0733f68948f98d8a28690e97.png",
+    "lines": [
+      "树苗长势较弱时，应先怎样做？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 98,
+    "text": "为每棵树苗设置编号有什么帮助？",
+    "index": 98,
+    "asset": "9872f9e81c35882c0de03604dbd674e5.png",
+    "lines": [
+      "为每棵树苗设置编号有什么帮助？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 99,
+    "text": "选购修复用树苗时，应关注什么？",
+    "index": 99,
+    "asset": "b9cd1ac53314fb40fda5b440c916f469.png",
+    "lines": [
+      "选购修复用树苗时，应关注什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 100,
+    "text": "树苗附近要开展施工，应该怎样？",
+    "index": 100,
+    "asset": "8441e27d5baba7bed638dc55d136b702.png",
+    "lines": [
+      "树苗附近要开展施工，应该怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 101,
+    "text": "养护浇水量应该怎样决定？",
+    "index": 101,
+    "asset": "e2fd30691219d9f2e47bcbfc02bb55f6.png",
+    "lines": [
+      "养护浇水量应该怎样决定？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 102,
+    "text": "植树活动结束后的养护，应由谁负责？",
+    "index": 102,
+    "asset": "0e35d445566d5022de72dabda335fc9d.png",
+    "lines": [
+      "植树活动结束后的养护，应由谁负责？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 103,
+    "text": "多人去同一处参加环保活动，怎样减少出行排放？",
+    "index": 103,
+    "asset": "22b955b5a8f4f16008d9c68a0e0e142d.png",
+    "lines": [
+      "多人去同一处参加环保活动，",
+      "怎样减少出行排放？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 104,
+    "text": "营地照明应该怎样使用？",
+    "index": 104,
+    "asset": "93d49b5e358427329aff851bdf5764ea.png",
+    "lines": [
+      "营地照明应该怎样使用？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 105,
+    "text": "准备活动餐食时，怎样减少浪费？",
+    "index": 105,
+    "asset": "22e4d1cfcc08555e34f2c9154ea362ed.png",
+    "lines": [
+      "准备活动餐食时，怎样减少浪费？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 106,
+    "text": "能修好的水壶出现小故障，应优先考虑什么？",
+    "index": 106,
+    "asset": "61b1f768fab8a471357640a3bd78414b.png",
+    "lines": [
+      "能修好的水壶出现小故障，应优先考虑什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 107,
+    "text": "选择营地餐具，怎样减少一次性垃圾？",
+    "index": 107,
+    "asset": "f40e1aa1af85d8a7c186c2d5ae1bb74e.png",
+    "lines": [
+      "选择营地餐具，怎样减少一次性垃圾？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 108,
+    "text": "领取环保宣传单时，怎样减少纸张浪费？",
+    "index": 108,
+    "asset": "a9bb72ec4f538409bed8f22c553249ef.png",
+    "lines": [
+      "领取环保宣传单时，怎样减少纸张浪费？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 109,
+    "text": "设备已经充满电，应怎样处理？",
+    "index": 109,
+    "asset": "7cf476b0f89441c5d708d07e791f583d.png",
+    "lines": [
+      "设备已经充满电，应怎样处理？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 110,
+    "text": "补给采购怎样减少运输次数？",
+    "index": 110,
+    "asset": "a10eb562836cdcc9b921672c6efe8862.png",
+    "lines": [
+      "补给采购怎样减少运输次数？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 111,
+    "text": "环保活动的横幅怎样更节约？",
+    "index": 111,
+    "asset": "fa55f08b574fa65f89d874de695ff30c.png",
+    "lines": [
+      "环保活动的横幅怎样更节约？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 112,
+    "text": "离开营地前，最后应该做什么？",
+    "index": 112,
+    "asset": "e0c963676de2810910f490b6bf742a40.png",
+    "lines": [
+      "离开营地前，最后应该做什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 113,
+    "text": "比较两种养护方法时，树苗条件最好怎样？",
+    "index": 113,
+    "asset": "4deb24d73efe0931051887e460690e3e.png",
+    "lines": [
+      "比较两种养护方法时，树苗条件最好怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 114,
+    "text": "记录树苗高度，怎样才能方便比较？",
+    "index": 114,
+    "asset": "4392ca87b1592322517dd95b5b014ebc.png",
+    "lines": [
+      "记录树苗高度，怎样才能方便比较？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 115,
+    "text": "只看种植当天的照片，能判断长期修复成功吗？",
+    "index": 115,
+    "asset": "869800f542b311c779761e10b5733d2d.png",
+    "lines": [
+      "只看种植当天的照片，",
+      "能判断长期修复成功吗？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 116,
+    "text": "观察记录中出现测量错误，应怎样？",
+    "index": 116,
+    "asset": "b2809a0df78ff312907bfc0f42b5f99e.png",
+    "lines": [
+      "观察记录中出现测量错误，应怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 117,
+    "text": "试验新修复方法前，哪种安排更合理？",
+    "index": 117,
+    "asset": "6a1e479ac75f6ab3b55cb355d698c45b.png",
+    "lines": [
+      "试验新修复方法前，哪种安排更合理？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 118,
+    "text": "连续记录降雨有什么帮助？",
+    "index": 118,
+    "asset": "2953423c3bdc8fdeef54e08d1c9c47f1.png",
+    "lines": [
+      "连续记录降雨有什么帮助？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 119,
+    "text": "某次观察缺少数据，应怎样记录？",
+    "index": 119,
+    "asset": "73b68e4ecfb534a07cf498cd7900f0df.png",
+    "lines": [
+      "某次观察缺少数据，应怎样记录？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 120,
+    "text": "给同一片修复区拍照，怎样利于比较？",
+    "index": 120,
+    "asset": "85fa6c0075469909532935e891431f46.png",
+    "lines": [
+      "给同一片修复区拍照，怎样利于比较？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 121,
+    "text": "评价修复效果，哪种记录更全面？",
+    "index": 121,
+    "asset": "49c988df30c0e28fde28b13ebb6496fa.png",
+    "lines": [
+      "评价修复效果，哪种记录更全面？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 122,
+    "text": "修复结果与预想不同，应该怎样？",
+    "index": 122,
+    "asset": "160cb4a6d89afcace0389be18ea0a1c2.png",
+    "lines": [
+      "修复结果与预想不同，应该怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 123,
+    "text": "制定绿洲保护计划时，应听取谁的意见？",
+    "index": 123,
+    "asset": "c6f8b0c235c9305c2e20f14fb4632f78.png",
+    "lines": [
+      "制定绿洲保护计划时，应听取谁的意见？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 124,
+    "text": "保护绿洲，需要同时关注哪些内容？",
+    "index": 124,
+    "asset": "18286a10a91065e6dd85de0ac1a669c9.png",
+    "lines": [
+      "保护绿洲，需要同时关注哪些内容？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 125,
+    "text": "干旱预警发布后，团队应该怎样？",
+    "index": 125,
+    "asset": "32398976af6141f741977b87d8030968.png",
+    "lines": [
+      "干旱预警发布后，团队应该怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 126,
+    "text": "看到网络上的神奇治沙方法，应怎样？",
+    "index": 126,
+    "asset": "43b266a26be1afcc2c26a2b32a3faacd.png",
+    "lines": [
+      "看到网络上的神奇治沙方法，应怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 127,
+    "text": "扩大种植面积前，应先确认什么？",
+    "index": 127,
+    "asset": "dc968d8bea188a9665ec3ad6508c33d9.png",
+    "lines": [
+      "扩大种植面积前，应先确认什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 128,
+    "text": "介绍公益植树成果时，应该怎样？",
+    "index": 128,
+    "asset": "30f7d8cecb282f9f76e5ed24abb18d3f.png",
+    "lines": [
+      "介绍公益植树成果时，应该怎样？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 129,
+    "text": "自然形成的沙漠生态，需要全部改成森林吗？",
+    "index": 129,
+    "asset": "fbbaf098c6af84057df63843e11765d4.png",
+    "lines": [
+      "自然形成的沙漠生态，需要全部改成森林吗？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 130,
+    "text": "大家争用有限水源时，怎样更有帮助？",
+    "index": 130,
+    "asset": "073d69b3a5a8d7d48fabfbb625b896a0.png",
+    "lines": [
+      "大家争用有限水源时，怎样更有帮助？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 131,
+    "text": "招募长期保护志愿者后，还应做什么？",
+    "index": 131,
+    "asset": "0a34b368af6b8e1618c7fed6b463af53.png",
+    "lines": [
+      "招募长期保护志愿者后，还应做什么？"
+    ]
+  },
+  {
+    "type": "question",
+    "number": 132,
+    "text": "守护绿洲最需要怎样的行动？",
+    "index": 132,
+    "asset": "4cdc5ec2a020006736e764a4db7a0314.png",
+    "lines": [
+      "守护绿洲最需要怎样的行动？"
+    ]
+  },
+  {
+    "type": "intro",
+    "level": 1,
+    "text": "梭梭：连续答对5题种满本关，答错从第1题重来。",
+    "index": 133,
+    "asset": "4b2de6d8a2ec023846fb673e7a4a155e.png",
+    "lines": [
+      "梭梭：连续答对5题种满本关，",
+      "答错从第1题重来。"
+    ]
+  },
+  {
+    "type": "intro",
+    "level": 2,
+    "text": "柽柳（红柳）：连续答对5题种满本关，答错从第1题重来。",
+    "index": 134,
+    "asset": "b4705d664bf8dbcc7004f46bb1fb848f.png",
+    "lines": [
+      "柽柳（红柳）：连续答对5题种满本关，",
+      "答错从第1题重来。"
+    ]
+  },
+  {
+    "type": "intro",
+    "level": 3,
+    "text": "沙拐枣：连续答对5题种满本关，答错从第1题重来。",
+    "index": 135,
+    "asset": "6a2848dfe95ef7210f7740bd604c0ce5.png",
+    "lines": [
+      "沙拐枣：连续答对5题种满本关，",
+      "答错从第1题重来。"
+    ]
+  },
+  {
+    "type": "intro",
+    "level": 4,
+    "text": "花棒：连续答对5题种满本关，答错从第1题重来。",
+    "index": 136,
+    "asset": "85c28babb4543cb725d537f38140d77d.png",
+    "lines": [
+      "花棒：连续答对5题种满本关，",
+      "答错从第1题重来。"
+    ]
+  },
+  {
+    "type": "intro",
+    "level": 5,
+    "text": "柠条：连续答对5题种满本关，答错从第1题重来。",
+    "index": 137,
+    "asset": "293454437cf327abc1af2a361feebb33.png",
+    "lines": [
+      "柠条：连续答对5题种满本关，",
+      "答错从第1题重来。"
+    ]
+  },
+  {
+    "type": "intro",
+    "level": 6,
+    "text": "白刺：连续答对5题种满本关，答错从第1题重来。",
+    "index": 138,
+    "asset": "43cc81807d439eb96b3aa33e35573e94.png",
+    "lines": [
+      "白刺：连续答对5题种满本关，",
+      "答错从第1题重来。"
+    ]
+  },
+  {
+    "type": "intro",
+    "level": 7,
+    "text": "沙柳：连续答对5题种满本关，答错从第1题重来。",
+    "index": 139,
+    "asset": "86f319847a6d6723a91c69525340bf12.png",
+    "lines": [
+      "沙柳：连续答对5题种满本关，",
+      "答错从第1题重来。"
+    ]
+  },
+  {
+    "type": "intro",
+    "level": 8,
+    "text": "杨柴（羊柴）：连续答对5题种满本关，答错从第1题重来。",
+    "index": 140,
+    "asset": "ef2bcb6d0008971e87e9c3581a720672.png",
+    "lines": [
+      "杨柴（羊柴）：连续答对5题种满本关，",
+      "答错从第1题重来。"
+    ]
+  },
+  {
+    "type": "intro",
+    "level": 9,
+    "text": "油蒿：连续答对5题种满本关，答错从第1题重来。",
+    "index": 141,
+    "asset": "b6ff0a44663613c3832cc2ad791c35b9.png",
+    "lines": [
+      "油蒿：连续答对5题种满本关，",
+      "答错从第1题重来。"
+    ]
+  },
+  {
+    "type": "intro",
+    "level": 10,
+    "text": "沙冬青：连续答对5题种满本关，答错从第1题重来。",
+    "index": 142,
+    "asset": "121009ebe6b62bc4f5e2467263a12efc.png",
+    "lines": [
+      "沙冬青：连续答对5题种满本关，",
+      "答错从第1题重来。"
+    ]
+  },
+  {
+    "type": "correct",
+    "level": 1,
+    "text": "答对啦，种下一株梭梭！",
+    "index": 143,
+    "asset": "b688e66e1f9d76bc7e0df420c3a4a48c.png",
+    "lines": [
+      "答对啦，种下一株梭梭！"
+    ]
+  },
+  {
+    "type": "correct",
+    "level": 2,
+    "text": "答对啦，种下一株柽柳（红柳）！",
+    "index": 144,
+    "asset": "a4c3fa1d29a9a625701c2c557db1bee5.png",
+    "lines": [
+      "答对啦，种下一株柽柳（红柳）！"
+    ]
+  },
+  {
+    "type": "correct",
+    "level": 3,
+    "text": "答对啦，种下一株沙拐枣！",
+    "index": 145,
+    "asset": "5cdc9a234343603702fbdef6aa797a2f.png",
+    "lines": [
+      "答对啦，种下一株沙拐枣！"
+    ]
+  },
+  {
+    "type": "correct",
+    "level": 4,
+    "text": "答对啦，种下一株花棒！",
+    "index": 146,
+    "asset": "dc01d39a0150b7a91896600d8f987b29.png",
+    "lines": [
+      "答对啦，种下一株花棒！"
+    ]
+  },
+  {
+    "type": "correct",
+    "level": 5,
+    "text": "答对啦，种下一株柠条！",
+    "index": 147,
+    "asset": "0ee10440b45119d070ce2397bb2645ca.png",
+    "lines": [
+      "答对啦，种下一株柠条！"
+    ]
+  },
+  {
+    "type": "correct",
+    "level": 6,
+    "text": "答对啦，种下一株白刺！",
+    "index": 148,
+    "asset": "b0f2ac8f2f339ef1c20fd4205a2b105b.png",
+    "lines": [
+      "答对啦，种下一株白刺！"
+    ]
+  },
+  {
+    "type": "correct",
+    "level": 7,
+    "text": "答对啦，种下一株沙柳！",
+    "index": 149,
+    "asset": "c1e5f8aa136dc58c2df69848c4cf43f5.png",
+    "lines": [
+      "答对啦，种下一株沙柳！"
+    ]
+  },
+  {
+    "type": "correct",
+    "level": 8,
+    "text": "答对啦，种下一株杨柴（羊柴）！",
+    "index": 150,
+    "asset": "7bc2f520cb45faf98d7a6cfbac8626ad.png",
+    "lines": [
+      "答对啦，种下一株杨柴（羊柴）！"
+    ]
+  },
+  {
+    "type": "correct",
+    "level": 9,
+    "text": "答对啦，种下一株油蒿！",
+    "index": 151,
+    "asset": "67c1be3442393e2bddf6f96503dfaee5.png",
+    "lines": [
+      "答对啦，种下一株油蒿！"
+    ]
+  },
+  {
+    "type": "correct",
+    "level": 10,
+    "text": "答对啦，种下一株沙冬青！",
+    "index": 152,
+    "asset": "214d648d46946d425ec5e494249b2b6a.png",
+    "lines": [
+      "答对啦，种下一株沙冬青！"
+    ]
+  },
+  {
+    "type": "wrong",
+    "text": "答错了！本关从第1题重新开始。",
+    "index": 153,
+    "asset": "388eb57224e6d9f233aa1a89c2420e7a.png",
+    "lines": [
+      "答错了！本关从第1题重新开始。"
+    ]
+  },
+  {
+    "type": "growth",
+    "text": "本关5株植物已种好！等待它们长大后继续挑战。",
+    "index": 154,
+    "asset": "e22d2eccdd50cce197f5fb537d24d968.png",
+    "lines": [
+      "本关5株植物已种好！",
+      "等待它们长大后继续挑战。"
+    ]
+  }
+]

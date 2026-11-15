@@ -6,6 +6,8 @@ import JSZip from 'jszip';
 const zip=await JSZip.loadAsync(await fs.readFile(process.argv[2] || 'mblock-project/exports/沙漠绿色公益-三关挑战-v020.mblock'));
 const p=JSON.parse(await zip.file('project.json').async('string')),stage=p.targets.find(t=>t.isStage),robot=p.targets.find(t=>t.name==='蓝豆机器人');
 const optionBank=stage.variables['quiz-option-number']?JSON.parse(await fs.readFile('mblock-project/assets/buttons/v042/questions.json','utf8')):null;
+const dialogFrames=stage.variables['quiz-panel-frame']?JSON.parse(await fs.readFile('mblock-project/assets/dialogue/v044/frames.json','utf8')):null;
+const rectangularPanel=p.targets.find(t=>t.name==='题目显示锚点'),questionProgress=p.targets.find(t=>t.name==='题号显示'),dialogEvents=[];
 const STOP=Symbol('stop-script');
 let now=0,threads=[],seed=12345;
 const fireworks=p.targets.find(t=>t.name==='通关烟花'),fireworkRuns=[],fireworkFrames=[];
@@ -48,6 +50,15 @@ function value(t,id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);switch(b.opc
  default:throw Error(`Unknown reporter ${b.opcode}`);
 }}
 function launch(op,broadcast,target){
+ if(dialogFrames&&op==='event_whenbroadcastreceived'&&broadcast==='quiz-display-message'){
+  const message=String(get(stage,'quiz-display-text')),frame=Number(get(stage,'quiz-panel-frame'));
+  if(message){
+   const descriptor=dialogFrames[frame-1];assert(descriptor,`Missing rectangular frame ${frame}`);
+   if(descriptor.type==='question'){assert(message.endsWith(descriptor.text));assert.equal(frame,Number(get(stage,'quiz-option-number')));}
+   else assert.equal(message,descriptor.text,'Feedback must match the rectangular panel');
+   dialogEvents.push(descriptor.type);
+  }
+ }
  if(op==='event_whenbroadcastreceived'&&broadcast==='final-fireworks')fireworkRuns.push({time:now,level:Number(get(stage,'game-level')),mature:Number(get(stage,'mature-tree-count')),phase:Number(get(stage,'game-phase'))});
  if(op==='event_whenbroadcastreceived'&&broadcast==='victory-badge')badgeAwards.push({level:Number(get(stage,'game-level')),mature:Number(get(stage,'mature-tree-count')),fireworksDone:Number(get(stage,'fireworks-finished'))});
  for(const t of p.targets.filter(t=>!target||t===target))for(const [id,b] of Object.entries(t.blocks))if(b.opcode===op&&(!broadcast||b.fields.BROADCAST_OPTION?.[1]===broadcast)){
@@ -124,6 +135,7 @@ for(let level=1;level<=totalLevels;level++){
    }
    assert.equal(get(robot,'y~RTTqq3ZyBb*3!4k!}~'),question.answer);optionDisplays++;
   }
+  if(dialogFrames){until(()=>rectangularPanel.visible&&rectangularPanel.currentCostume===Number(get(stage,'quiz-panel-frame'))-1&&questionProgress.visible&&questionProgress.currentCostume===n);assert.equal(dialogFrames[rectangularPanel.currentCostume].text,get(robot,'Ls*3*d8|jjq(bUHN*G6-'));}
   if(staysAtPlant){
    const point=n===0?{x:-160,y:35}:walkMoves.findLast(m=>m.level===level&&m.direction==='out'&&m.tick===24&&m.trees===n-1);assert(point);
    assert.equal(robot.x,point.x);assert.equal(robot.y,point.y);assert.equal(state('seedling-handoff-completed'),n);
@@ -195,4 +207,5 @@ if(robot.lists['walk-poses']){
 }
 if(staysAtPlant){assert.equal(stationaryQuestions,totalLevels*5);console.log(`PASS stationary answering: ${stationaryQuestions} questions wait at the start/last planted position in idle pose, only after planting finishes; reset/replay still restores the start.`);}
 if(hasOasis){assert.deepEqual(oasisChanges,[{level:totalLevels,mature:5,phase:3}]);assert.equal(stage.currentCostume,0);console.log('PASS oasis: only after all five final-level plants mature, visible during fireworks and badge; earlier levels/retries stay desert; replay restores first desert.');}
-if(optionDisplays)console.log(`PASS option buttons: ${optionDisplays} quiz displays show matching question-only bubbles and A/B option costumes, with unchanged correct answers.`);
+if(optionDisplays)console.log(`PASS option buttons: ${optionDisplays} quiz displays show matching question stems and A/B option costumes, with unchanged correct answers.`);
+if(dialogFrames){for(const type of ['question','intro','correct','wrong','growth'])assert(dialogEvents.includes(type));console.log(`PASS rectangular dialogue: ${dialogEvents.length} messages map to correct PNG panels; all 50 formal questions show the matching stem and question number; intro/success/failure/growth messages preserved.`);}
