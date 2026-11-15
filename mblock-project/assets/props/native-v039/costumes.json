@@ -1,0 +1,895 @@
+{
+  "source": "mblock-project/exports/沙漠绿色公益-机器人走路-v037.mblock",
+  "output": "mblock-project/exports/沙漠绿色公益-无铲走路-v039.mblock",
+  "withoutShovel": true,
+  "sourceStructure": [
+    {
+      "name": "Stage",
+      "blocks": "310af848640f99644fed54df4938769e87ca14f333a8659fc4ece19f3f80a4dc",
+      "variables": [
+        {
+          "id": "%z6KO!=AV03bkJsGH`QJ",
+          "name": "已种树数"
+        },
+        {
+          "id": "seedling-handoff-completed",
+          "name": "种植完成数"
+        },
+        {
+          "id": "saxaul-landed-count",
+          "name": "已落苗数"
+        },
+        {
+          "id": "mature-tree-count",
+          "name": "已长大树数"
+        },
+        {
+          "id": "quiz-click-choice",
+          "name": "所选答案"
+        },
+        {
+          "id": "quiz-click-ready",
+          "name": "等待选择"
+        },
+        {
+          "id": "game-level",
+          "name": "当前关卡"
+        },
+        {
+          "id": "game-phase",
+          "name": "关卡状态"
+        },
+        {
+          "id": "game-next",
+          "name": "继续游戏"
+        },
+        {
+          "id": "game-pool-index",
+          "name": "题库索引"
+        },
+        {
+          "id": "game-total-levels",
+          "name": "总关卡数"
+        },
+        {
+          "id": "game-plant-name",
+          "name": "本关植物"
+        },
+        {
+          "id": "game-desert-name",
+          "name": "本关沙漠"
+        },
+        {
+          "id": "fireworks-finished",
+          "name": "烟花播放完毕"
+        },
+        {
+          "id": "quiz-display-text",
+          "name": "屏幕提示文字"
+        }
+      ],
+      "lists": [
+        {
+          "id": "game-pool",
+          "name": "本关题号"
+        },
+        {
+          "id": "level-bank-1",
+          "name": "第1关题号"
+        },
+        {
+          "id": "level-bank-2",
+          "name": "第2关题号"
+        },
+        {
+          "id": "level-bank-3",
+          "name": "第3关题号"
+        },
+        {
+          "id": "level-bank-4",
+          "name": "第4关题号"
+        },
+        {
+          "id": "level-bank-5",
+          "name": "第5关题号"
+        },
+        {
+          "id": "level-bank-6",
+          "name": "第6关题号"
+        },
+        {
+          "id": "level-bank-7",
+          "name": "第7关题号"
+        },
+        {
+          "id": "level-bank-8",
+          "name": "第8关题号"
+        },
+        {
+          "id": "level-bank-9",
+          "name": "第9关题号"
+        },
+        {
+          "id": "level-bank-10",
+          "name": "第10关题号"
+        },
+        {
+          "id": "game-plant-names",
+          "name": "关卡植物名称"
+        },
+        {
+          "id": "game-desert-names",
+          "name": "关卡沙漠名称"
+        },
+        {
+          "id": "game-music-names",
+          "name": "关卡音乐名称"
+        }
+      ],
+      "sounds": [
+        {
+          "name": "pop",
+          "asset": "83a9787d4cb6f3b7632b4ddfebf74367.wav"
+        },
+        {
+          "name": "沙漠绿洲",
+          "asset": "16e0d91d94e830522f8e52998c68da8e.wav"
+        },
+        {
+          "name": "01 金色沙海·出发",
+          "asset": "f5050e4a34a9bbc2a160a6638d1fc926.wav"
+        },
+        {
+          "name": "02 红岩沙漠·足迹",
+          "asset": "964f347f373f9ea0a944eea1fe5e8f59.wav"
+        },
+        {
+          "name": "03 月牙沙丘·月光",
+          "asset": "ac5dc1df0e03fbebe3f4598e7ca630c6.wav"
+        },
+        {
+          "name": "04 岩丘荒漠·远行",
+          "asset": "8ee3b600a6b5a1fca2e8fa230dc97430.wav"
+        },
+        {
+          "name": "05 黑石戈壁·步伐",
+          "asset": "c9c17de0e7cb07e4c8ed2e2120b04c79.wav"
+        },
+        {
+          "name": "06 盐滩荒漠·微风",
+          "asset": "780410e600c1e2cd5fb927d667bab842.wav"
+        },
+        {
+          "name": "07 白沙沙漠·晶光",
+          "asset": "fb188bb1a19e2e26d856dbb454a23c9a.wav"
+        },
+        {
+          "name": "08 峡谷沙漠·回声",
+          "asset": "ce5b858642c8aa09ae02279a44c2b7d9.wav"
+        },
+        {
+          "name": "09 落日沙海·暖光",
+          "asset": "9e6a4e6bd6ca2bb9b1ef701817c0634c.wav"
+        },
+        {
+          "name": "10 星夜沙漠·星河",
+          "asset": "cc541f78a4484f7bbbcb2dd6c9fd9889.wav"
+        }
+      ]
+    },
+    {
+      "name": "cyberpi",
+      "blocks": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "蓝豆机器人",
+      "blocks": "704237663a10e26d9375a3207c6d023e66ef4abf0e248989d3a0d672515717fd",
+      "variables": [
+        {
+          "id": "^.xR`::3*3?lO,q66=Wm",
+          "name": "动作已完成数"
+        },
+        {
+          "id": "rUg.tg,nrNc5f~Tx4s@]",
+          "name": "种植动画帧"
+        },
+        {
+          "id": "E+%ar3|qW:DZjq^qGmWZ",
+          "name": "抽中题号"
+        },
+        {
+          "id": "$9*Tyw6_/.fg.UyMoWb-",
+          "name": "已出题号"
+        },
+        {
+          "id": "Ls*3*d8|jjq(bUHN*G6-",
+          "name": "当前题目"
+        },
+        {
+          "id": "y~RTTqq3ZyBb*3!4k!}~",
+          "name": "正确选项"
+        },
+        {
+          "id": "walk-start-x",
+          "name": "walk-start-x"
+        },
+        {
+          "id": "walk-start-y",
+          "name": "walk-start-y"
+        },
+        {
+          "id": "walk-target-x",
+          "name": "walk-target-x"
+        },
+        {
+          "id": "walk-target-y",
+          "name": "walk-target-y"
+        },
+        {
+          "id": "walk-tick",
+          "name": "walk-tick"
+        }
+      ],
+      "lists": [
+        {
+          "id": "walk-poses",
+          "name": "走路造型"
+        }
+      ],
+      "sounds": [
+        {
+          "name": "答对提示",
+          "asset": "1aa3a28089332fa7bb72bd9dfe0b057a.wav"
+        },
+        {
+          "name": "绿洲完成",
+          "asset": "29e2a56d8b4a79bca17ac4f623653e40.wav"
+        }
+      ]
+    },
+    {
+      "name": "植物1",
+      "blocks": "137f6b91bbc336849c68c9d61cdf0eaa92782ecaaaf488ef76d4d6077c50d26e",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "植物2",
+      "blocks": "cd6bfb0b60a2105470a5e9a668497812b463d3f1d2d9de6c7ea4e9c7b3e82ae8",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "植物3",
+      "blocks": "4105e5986566d31d3b6b7413fb07a724551b2e4f54393e0a94905c931c422537",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "植物4",
+      "blocks": "74be3377b9d27c9f3f3870a279b41013e95b14d40e92311cfa01dc956901924d",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "植物5",
+      "blocks": "8e2b66a8e207af5cec520e1780622b73c569029c84fb16767a35986696136c3a",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "答案A",
+      "blocks": "e0a06da9af0163d8299c547c6808acac0af03cc4322d4bb43d47a06758ef7d77",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "答案B",
+      "blocks": "2dfd9389516aa20418a70b7b34b930e1b1deab0a526d6ee1c708548d8998cd9c",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "关卡标题",
+      "blocks": "d079b95cc766f7a6dc5591ac1d26506e285f31b8d94e58a69a6b609fe3c73a48",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "关卡继续按钮",
+      "blocks": "c2398ea79c49be98fb1de27e4db726b0a988eb10a827c647ae55ada58a456715",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "通关烟花",
+      "blocks": "3fe705e46b4b78b337b477f00d2e098f50a47b37f1376ba7aa4ed4540e24852d",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "通关徽章",
+      "blocks": "44f87aad6554426d5f4f5a5fb80b66e6e40f6b6d612f91f8adc20123578b2769",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    },
+    {
+      "name": "题目显示锚点",
+      "blocks": "1bab42cb6ad53a3a2d8ba09d07c3f91f5c8b3ed0ce3548fc5b2193d64914472a",
+      "variables": [],
+      "lists": [],
+      "sounds": []
+    }
+  ],
+  "frames": [
+    {
+      "index": 0,
+      "name": "蓝豆机器人",
+      "source": "66ba4c9da82b6f77286aa3ea185ffc89.svg",
+      "sourceCostume": {
+        "name": "蓝豆机器人",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "66ba4c9da82b6f77286aa3ea185ffc89",
+        "md5ext": "66ba4c9da82b6f77286aa3ea185ffc89.svg",
+        "rotationCenterX": 441.5,
+        "rotationCenterY": 441.5
+      },
+      "asset": "ee3ca7d4a1376a0f7ed574bda5616e1e.png"
+    },
+    {
+      "index": 1,
+      "name": "挥手-02",
+      "source": "bc98ca0726c2d39cd57c1217df89d8fc.svg",
+      "sourceCostume": {
+        "name": "挥手-02",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "bc98ca0726c2d39cd57c1217df89d8fc",
+        "md5ext": "bc98ca0726c2d39cd57c1217df89d8fc.svg",
+        "rotationCenterX": 441.5,
+        "rotationCenterY": 442
+      },
+      "asset": "966e87e2eed63085c5d602d8f9dce4e4.png"
+    },
+    {
+      "index": 2,
+      "name": "挥手-03",
+      "source": "a1eb26e61df3cb41a4ee78a340b23e52.svg",
+      "sourceCostume": {
+        "name": "挥手-03",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "a1eb26e61df3cb41a4ee78a340b23e52",
+        "md5ext": "a1eb26e61df3cb41a4ee78a340b23e52.svg",
+        "rotationCenterX": 441.75,
+        "rotationCenterY": 442
+      },
+      "asset": "9ca22ba84c8e351827a0f6dcca016228.png"
+    },
+    {
+      "index": 3,
+      "name": "种植-弯腰",
+      "source": "b260a76444ad8b81312fbbcc136bec68.svg",
+      "sourceCostume": {
+        "name": "种植-弯腰",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "b260a76444ad8b81312fbbcc136bec68",
+        "md5ext": "b260a76444ad8b81312fbbcc136bec68.svg",
+        "rotationCenterX": 445,
+        "rotationCenterY": 422
+      },
+      "asset": "8d460d9c2e4e896b2c5b2440dca7d6f2.png"
+    },
+    {
+      "index": 4,
+      "name": "种植-放苗",
+      "source": "f266422407e2b5b3f009916fe978e035.svg",
+      "sourceCostume": {
+        "name": "种植-放苗",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "f266422407e2b5b3f009916fe978e035",
+        "md5ext": "f266422407e2b5b3f009916fe978e035.svg",
+        "rotationCenterX": 450.5,
+        "rotationCenterY": 418
+      },
+      "asset": "8f9b9bdf5be90b3fda64b1d7ec2fc396.png"
+    },
+    {
+      "index": 5,
+      "name": "种树24-01",
+      "source": "e5fe685956908f5203b1efc3628f6838.svg",
+      "sourceCostume": {
+        "name": "种树24-01",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "e5fe685956908f5203b1efc3628f6838",
+        "md5ext": "e5fe685956908f5203b1efc3628f6838.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "a44c5f3e8062896c26c21d6b42ba13aa.png"
+    },
+    {
+      "index": 6,
+      "name": "种树24-02",
+      "source": "e5fe685956908f5203b1efc3628f6838.svg",
+      "sourceCostume": {
+        "name": "种树24-02",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "e5fe685956908f5203b1efc3628f6838",
+        "md5ext": "e5fe685956908f5203b1efc3628f6838.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "a44c5f3e8062896c26c21d6b42ba13aa.png"
+    },
+    {
+      "index": 7,
+      "name": "种树24-03",
+      "source": "287c45fc20e7ae57a7d899c343a2e0be.svg",
+      "sourceCostume": {
+        "name": "种树24-03",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "287c45fc20e7ae57a7d899c343a2e0be",
+        "md5ext": "287c45fc20e7ae57a7d899c343a2e0be.svg",
+        "rotationCenterX": 513,
+        "rotationCenterY": 440
+      },
+      "asset": "b00f38756cc00903710cbfcd08660363.png"
+    },
+    {
+      "index": 8,
+      "name": "种树24-04",
+      "source": "287c45fc20e7ae57a7d899c343a2e0be.svg",
+      "sourceCostume": {
+        "name": "种树24-04",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "287c45fc20e7ae57a7d899c343a2e0be",
+        "md5ext": "287c45fc20e7ae57a7d899c343a2e0be.svg",
+        "rotationCenterX": 513,
+        "rotationCenterY": 440
+      },
+      "asset": "b00f38756cc00903710cbfcd08660363.png"
+    },
+    {
+      "index": 9,
+      "name": "种树24-05",
+      "source": "1985f7dfe77fd5ea50715436a455a510.svg",
+      "sourceCostume": {
+        "name": "种树24-05",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "1985f7dfe77fd5ea50715436a455a510",
+        "md5ext": "1985f7dfe77fd5ea50715436a455a510.svg",
+        "rotationCenterX": 493.75,
+        "rotationCenterY": 441.5
+      },
+      "asset": "9f4a8b82417bf8fc4aa3bb675c0fe57b.png"
+    },
+    {
+      "index": 10,
+      "name": "种树24-06",
+      "source": "1985f7dfe77fd5ea50715436a455a510.svg",
+      "sourceCostume": {
+        "name": "种树24-06",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "1985f7dfe77fd5ea50715436a455a510",
+        "md5ext": "1985f7dfe77fd5ea50715436a455a510.svg",
+        "rotationCenterX": 493.75,
+        "rotationCenterY": 441.5
+      },
+      "asset": "9f4a8b82417bf8fc4aa3bb675c0fe57b.png"
+    },
+    {
+      "index": 11,
+      "name": "种树24-07",
+      "source": "f11aa4e02cff31648a62dc44fa25e508.svg",
+      "sourceCostume": {
+        "name": "种树24-07",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "f11aa4e02cff31648a62dc44fa25e508",
+        "md5ext": "f11aa4e02cff31648a62dc44fa25e508.svg",
+        "rotationCenterX": 473,
+        "rotationCenterY": 442.5
+      },
+      "asset": "0596b70401051791fe13ec1a1b8d1631.png"
+    },
+    {
+      "index": 12,
+      "name": "种树24-08",
+      "source": "f11aa4e02cff31648a62dc44fa25e508.svg",
+      "sourceCostume": {
+        "name": "种树24-08",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "f11aa4e02cff31648a62dc44fa25e508",
+        "md5ext": "f11aa4e02cff31648a62dc44fa25e508.svg",
+        "rotationCenterX": 473,
+        "rotationCenterY": 442.5
+      },
+      "asset": "0596b70401051791fe13ec1a1b8d1631.png"
+    },
+    {
+      "index": 13,
+      "name": "种树24-09",
+      "source": "3e3364c268b965390435aae7c52c7744.svg",
+      "sourceCostume": {
+        "name": "种树24-09",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "3e3364c268b965390435aae7c52c7744",
+        "md5ext": "3e3364c268b965390435aae7c52c7744.svg",
+        "rotationCenterX": 451.5,
+        "rotationCenterY": 442
+      },
+      "asset": "fb4bb5b8a31b4353388fc863a9e5cfb3.png"
+    },
+    {
+      "index": 14,
+      "name": "种树24-10",
+      "source": "3e3364c268b965390435aae7c52c7744.svg",
+      "sourceCostume": {
+        "name": "种树24-10",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "3e3364c268b965390435aae7c52c7744",
+        "md5ext": "3e3364c268b965390435aae7c52c7744.svg",
+        "rotationCenterX": 451.5,
+        "rotationCenterY": 442
+      },
+      "asset": "fb4bb5b8a31b4353388fc863a9e5cfb3.png"
+    },
+    {
+      "index": 15,
+      "name": "种树24-11",
+      "source": "d4d00aec5a5f731d54bb77dd728b4f5e.svg",
+      "sourceCostume": {
+        "name": "种树24-11",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "d4d00aec5a5f731d54bb77dd728b4f5e",
+        "md5ext": "d4d00aec5a5f731d54bb77dd728b4f5e.svg",
+        "rotationCenterX": 433.25,
+        "rotationCenterY": 441.5
+      },
+      "asset": "12b15e984dc7e8f179297abbc1bbfa19.png"
+    },
+    {
+      "index": 16,
+      "name": "种树24-12",
+      "source": "d4d00aec5a5f731d54bb77dd728b4f5e.svg",
+      "sourceCostume": {
+        "name": "种树24-12",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "d4d00aec5a5f731d54bb77dd728b4f5e",
+        "md5ext": "d4d00aec5a5f731d54bb77dd728b4f5e.svg",
+        "rotationCenterX": 433.25,
+        "rotationCenterY": 441.5
+      },
+      "asset": "12b15e984dc7e8f179297abbc1bbfa19.png"
+    },
+    {
+      "index": 17,
+      "name": "种树24-13",
+      "source": "d4d00aec5a5f731d54bb77dd728b4f5e.svg",
+      "sourceCostume": {
+        "name": "种树24-13",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "d4d00aec5a5f731d54bb77dd728b4f5e",
+        "md5ext": "d4d00aec5a5f731d54bb77dd728b4f5e.svg",
+        "rotationCenterX": 433.25,
+        "rotationCenterY": 441.5
+      },
+      "asset": "12b15e984dc7e8f179297abbc1bbfa19.png"
+    },
+    {
+      "index": 18,
+      "name": "种树24-14",
+      "source": "d4d00aec5a5f731d54bb77dd728b4f5e.svg",
+      "sourceCostume": {
+        "name": "种树24-14",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "d4d00aec5a5f731d54bb77dd728b4f5e",
+        "md5ext": "d4d00aec5a5f731d54bb77dd728b4f5e.svg",
+        "rotationCenterX": 433.25,
+        "rotationCenterY": 441.5
+      },
+      "asset": "12b15e984dc7e8f179297abbc1bbfa19.png"
+    },
+    {
+      "index": 19,
+      "name": "种树24-15",
+      "source": "3e3364c268b965390435aae7c52c7744.svg",
+      "sourceCostume": {
+        "name": "种树24-15",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "3e3364c268b965390435aae7c52c7744",
+        "md5ext": "3e3364c268b965390435aae7c52c7744.svg",
+        "rotationCenterX": 451.5,
+        "rotationCenterY": 442
+      },
+      "asset": "fb4bb5b8a31b4353388fc863a9e5cfb3.png"
+    },
+    {
+      "index": 20,
+      "name": "种树24-16",
+      "source": "3e3364c268b965390435aae7c52c7744.svg",
+      "sourceCostume": {
+        "name": "种树24-16",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "3e3364c268b965390435aae7c52c7744",
+        "md5ext": "3e3364c268b965390435aae7c52c7744.svg",
+        "rotationCenterX": 451.5,
+        "rotationCenterY": 442
+      },
+      "asset": "fb4bb5b8a31b4353388fc863a9e5cfb3.png"
+    },
+    {
+      "index": 21,
+      "name": "种树24-17",
+      "source": "f11aa4e02cff31648a62dc44fa25e508.svg",
+      "sourceCostume": {
+        "name": "种树24-17",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "f11aa4e02cff31648a62dc44fa25e508",
+        "md5ext": "f11aa4e02cff31648a62dc44fa25e508.svg",
+        "rotationCenterX": 473,
+        "rotationCenterY": 442.5
+      },
+      "asset": "0596b70401051791fe13ec1a1b8d1631.png"
+    },
+    {
+      "index": 22,
+      "name": "种树24-18",
+      "source": "f11aa4e02cff31648a62dc44fa25e508.svg",
+      "sourceCostume": {
+        "name": "种树24-18",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "f11aa4e02cff31648a62dc44fa25e508",
+        "md5ext": "f11aa4e02cff31648a62dc44fa25e508.svg",
+        "rotationCenterX": 473,
+        "rotationCenterY": 442.5
+      },
+      "asset": "0596b70401051791fe13ec1a1b8d1631.png"
+    },
+    {
+      "index": 23,
+      "name": "种树24-19",
+      "source": "1985f7dfe77fd5ea50715436a455a510.svg",
+      "sourceCostume": {
+        "name": "种树24-19",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "1985f7dfe77fd5ea50715436a455a510",
+        "md5ext": "1985f7dfe77fd5ea50715436a455a510.svg",
+        "rotationCenterX": 493.75,
+        "rotationCenterY": 441.5
+      },
+      "asset": "9f4a8b82417bf8fc4aa3bb675c0fe57b.png"
+    },
+    {
+      "index": 24,
+      "name": "种树24-20",
+      "source": "1985f7dfe77fd5ea50715436a455a510.svg",
+      "sourceCostume": {
+        "name": "种树24-20",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "1985f7dfe77fd5ea50715436a455a510",
+        "md5ext": "1985f7dfe77fd5ea50715436a455a510.svg",
+        "rotationCenterX": 493.75,
+        "rotationCenterY": 441.5
+      },
+      "asset": "9f4a8b82417bf8fc4aa3bb675c0fe57b.png"
+    },
+    {
+      "index": 25,
+      "name": "种树24-21",
+      "source": "287c45fc20e7ae57a7d899c343a2e0be.svg",
+      "sourceCostume": {
+        "name": "种树24-21",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "287c45fc20e7ae57a7d899c343a2e0be",
+        "md5ext": "287c45fc20e7ae57a7d899c343a2e0be.svg",
+        "rotationCenterX": 513,
+        "rotationCenterY": 440
+      },
+      "asset": "b00f38756cc00903710cbfcd08660363.png"
+    },
+    {
+      "index": 26,
+      "name": "种树24-22",
+      "source": "287c45fc20e7ae57a7d899c343a2e0be.svg",
+      "sourceCostume": {
+        "name": "种树24-22",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "287c45fc20e7ae57a7d899c343a2e0be",
+        "md5ext": "287c45fc20e7ae57a7d899c343a2e0be.svg",
+        "rotationCenterX": 513,
+        "rotationCenterY": 440
+      },
+      "asset": "b00f38756cc00903710cbfcd08660363.png"
+    },
+    {
+      "index": 27,
+      "name": "种树24-23",
+      "source": "e5fe685956908f5203b1efc3628f6838.svg",
+      "sourceCostume": {
+        "name": "种树24-23",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "e5fe685956908f5203b1efc3628f6838",
+        "md5ext": "e5fe685956908f5203b1efc3628f6838.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "a44c5f3e8062896c26c21d6b42ba13aa.png"
+    },
+    {
+      "index": 28,
+      "name": "种树24-24",
+      "source": "e5fe685956908f5203b1efc3628f6838.svg",
+      "sourceCostume": {
+        "name": "种树24-24",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "e5fe685956908f5203b1efc3628f6838",
+        "md5ext": "e5fe685956908f5203b1efc3628f6838.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "a44c5f3e8062896c26c21d6b42ba13aa.png"
+    },
+    {
+      "index": 29,
+      "name": "走路-01",
+      "source": "5a20ac8571e173b8eba083123e19b96e.svg",
+      "sourceCostume": {
+        "name": "走路-01",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "5a20ac8571e173b8eba083123e19b96e",
+        "md5ext": "5a20ac8571e173b8eba083123e19b96e.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "4c6e308a74e66936be0ac66dbdb152f4.png"
+    },
+    {
+      "index": 30,
+      "name": "走路-02",
+      "source": "65eed9438f2cb9ed270ec47ae464e290.svg",
+      "sourceCostume": {
+        "name": "走路-02",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "65eed9438f2cb9ed270ec47ae464e290",
+        "md5ext": "65eed9438f2cb9ed270ec47ae464e290.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "897126737c95723c9353634ee68feaa7.png"
+    },
+    {
+      "index": 31,
+      "name": "走路-03",
+      "source": "40a1fe7be80f1414cf312c68dd62f55d.svg",
+      "sourceCostume": {
+        "name": "走路-03",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "40a1fe7be80f1414cf312c68dd62f55d",
+        "md5ext": "40a1fe7be80f1414cf312c68dd62f55d.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "bb30cba255d95fd4b88ec3027ff5fae0.png"
+    },
+    {
+      "index": 32,
+      "name": "走路-04",
+      "source": "92f680438c4c9ba943ee9c6978828c4b.svg",
+      "sourceCostume": {
+        "name": "走路-04",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "92f680438c4c9ba943ee9c6978828c4b",
+        "md5ext": "92f680438c4c9ba943ee9c6978828c4b.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "c7084dee18c69d986958a70f31e11c8b.png"
+    },
+    {
+      "index": 33,
+      "name": "走路-05",
+      "source": "7be622a15dc187596b4492f81a6d300f.svg",
+      "sourceCostume": {
+        "name": "走路-05",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "7be622a15dc187596b4492f81a6d300f",
+        "md5ext": "7be622a15dc187596b4492f81a6d300f.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "4c6e308a74e66936be0ac66dbdb152f4.png"
+    },
+    {
+      "index": 34,
+      "name": "走路-06",
+      "source": "154008707b39f33c0d17feb94869ff07.svg",
+      "sourceCostume": {
+        "name": "走路-06",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "154008707b39f33c0d17feb94869ff07",
+        "md5ext": "154008707b39f33c0d17feb94869ff07.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "ba6099d3035b2622db66fc08675639d7.png"
+    },
+    {
+      "index": 35,
+      "name": "走路-07",
+      "source": "7f672370c0e51d16190d9948e5e7e194.svg",
+      "sourceCostume": {
+        "name": "走路-07",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "7f672370c0e51d16190d9948e5e7e194",
+        "md5ext": "7f672370c0e51d16190d9948e5e7e194.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "aa5439caf410595ff08709b0ee4ef2ea.png"
+    },
+    {
+      "index": 36,
+      "name": "走路-08",
+      "source": "62fb2b00b2e25069311e91ceaabbc194.svg",
+      "sourceCostume": {
+        "name": "走路-08",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "assetId": "62fb2b00b2e25069311e91ceaabbc194",
+        "md5ext": "62fb2b00b2e25069311e91ceaabbc194.svg",
+        "rotationCenterX": 524.75,
+        "rotationCenterY": 439.5
+      },
+      "asset": "2eefdfcfef707af69dc5360dce813c22.png"
+    }
+  ]
+}
