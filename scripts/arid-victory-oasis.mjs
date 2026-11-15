@@ -1,0 +1,21 @@
+import fs from 'node:fs/promises';
+import crypto from 'node:crypto';
+import assert from 'node:assert/strict';
+import JSZip from 'jszip';
+import sharp from 'sharp';
+
+const source='mblock-project/exports/沙漠绿色公益-通关绿洲-v040.mblock';
+const output='mblock-project/exports/沙漠绿色公益-沙生绿洲-v041.mblock';
+const root='mblock-project/assets/oasis/v041';
+const zip=await JSZip.loadAsync(await fs.readFile(source));
+const p=JSON.parse(await zip.file('project.json').async('string'));
+const stage=p.targets.find(t=>t.isStage),costume=stage.costumes.find(c=>c.name==='胜利绿洲');assert(costume);
+const old=costume.md5ext;
+const png=await sharp(`${root}/oasis-original.png`).resize(960,720).removeAlpha().png().toBuffer();
+await fs.writeFile(`${root}/oasis.png`,png);
+const hash=crypto.createHash('md5').update(png).digest('hex');zip.file(`${hash}.png`,png);
+Object.assign(costume,{assetId:hash,md5ext:`${hash}.png`});
+if(!p.targets.some(t=>t.costumes.some(c=>c.md5ext===old)))zip.remove(old);
+zip.file('project.json',JSON.stringify(p));
+const bytes=await zip.generateAsync({type:'nodebuffer',compression:'DEFLATE',compressionOptions:{level:6}});assert(bytes.length<40*1024*1024);
+await fs.writeFile(output,bytes);console.log(`${output}: only victory oasis artwork replaced, ${bytes.length} bytes.`);
