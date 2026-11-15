@@ -10,6 +10,7 @@ let now=0,threads=[],seed=12345;
 const fireworks=p.targets.find(t=>t.name==='通关烟花'),fireworkRuns=[],fireworkFrames=[];
 const badge=p.targets.find(t=>t.name==='通关徽章'),badgeAwards=[];
 const musicEvents=[];
+const walkMoves=[];
 const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/2**32;};
 const get=(t,id)=>(t.variables[id]||stage.variables[id])[1];
 const set=(t,id,v)=>{(t.variables[id]||stage.variables[id])[1]=v;};
@@ -25,6 +26,9 @@ function value(t,id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);switch(b.opc
  case 'operator_join':return String(I('STRING1'))+String(I('STRING2'));
  case 'operator_random':{let a=Number(I('FROM')),b=Number(I('TO'));return a+Math.floor(random()*(b-a+1));}
  case 'operator_add':return Number(I('NUM1'))+Number(I('NUM2'));
+ case 'operator_subtract':return Number(I('NUM1'))-Number(I('NUM2'));
+ case 'operator_mod':return ((Number(I('NUM1'))%Number(I('NUM2')))+Number(I('NUM2')))%Number(I('NUM2'));
+ case 'operator_and':return Boolean(I('OPERAND1'))&&Boolean(I('OPERAND2'));
  case 'operator_multiply':return Number(I('NUM1'))*Number(I('NUM2'));
  case 'operator_divide':return Number(I('NUM1'))/Number(I('NUM2'));
  case 'data_itemoflist':return list(t,b.fields.LIST[1])[Number(I('INDEX'))-1]??'';
@@ -34,6 +38,8 @@ function value(t,id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);switch(b.opc
  case 'sensing_of':{const target=p.targets.find(t=>t.name===I('OBJECT'));return ({'x position':target.x,'y position':target.y,'size':target.size,'costume #':target.currentCostume+1})[b.fields.PROPERTY[0]];}
  case 'sound_sounds_menu':return b.fields.SOUND_MENU[0];
  case 'looks_costume':return b.fields.COSTUME[0];
+ case 'motion_xposition':return t.x;
+ case 'motion_yposition':return t.y;
  default:throw Error(`Unknown reporter ${b.opcode}`);
 }}
 function launch(op,broadcast,target){
@@ -64,7 +70,7 @@ function* run(t,id){while(id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);swi
  case 'looks_switchbackdropto':{const c=I('BACKDROP');const byName=stage.costumes.findIndex(x=>x.name===c);stage.currentCostume=byName>=0?byName:(Number(c)-1)%stage.costumes.length;}break;
  case 'looks_say':break;
  case 'looks_sayforsecs':yield Number(I('SECS'));break;
- case 'motion_gotoxy':t.x=Number(I('X'));t.y=Number(I('Y'));break;
+ case 'motion_gotoxy':t.x=Number(I('X'));t.y=Number(I('Y'));if(t===robot&&/^walk-(out|back)-move$/.test(id))walkMoves.push({direction:id.includes('-out-')?'out':'back',tick:Number(get(t,'walk-tick')),x:t.x,y:t.y,costume:t.costumes[t.currentCostume].name,landed:Number(get(t,'seedling-handoff-completed')),trees:Number(get(t,'%z6KO!=AV03bkJsGH`QJ')),targetX:Number(get(t,'walk-target-x')),targetY:Number(get(t,'walk-target-y'))});break;
  case 'motion_glidesecstoxy':yield Number(I('SECS'));t.x=Number(I('X'));t.y=Number(I('Y'));break;
  case 'motion_pointindirection':t.direction=Number(I('DIRECTION'));break;
  case 'sound_setvolumeto':t.volume=Number(I('VOLUME'));break;
@@ -144,3 +150,17 @@ if(fireworks){
 }
 if(badge){assert.deepEqual(badgeAwards,[{level:totalLevels,mature:5,fireworksDone:1}]);assert.equal(badge.visible,false);console.log('PASS badge: awarded once after final growth and fireworks; hidden in earlier levels, retries and replay.');}
 if(stage.lists['game-music-names']){assert.equal(new Set(list(stage,'game-music-names')).size,totalLevels);for(const e of musicEvents.filter(e=>e.type==='play')){assert.equal(e.sound,list(stage,'game-music-names')[e.level-1]);assert.equal(e.volume,30);}console.log('PASS music: ten distinct tracks selected by level, retries retain the current track, volume 30%, growth triggers stop, replay restores level 1 music.');}
+if(robot.lists['walk-poses']){
+ assert(walkMoves.some(m=>m.direction==='out')&&walkMoves.some(m=>m.direction==='back'));
+ assert.equal(walkMoves.length%24,0);
+ for(let i=0;i<walkMoves.length;i+=24){
+  const path=walkMoves.slice(i,i+24);
+  assert.deepEqual(path.map(m=>m.tick),Array.from({length:24},(_,j)=>j+1));
+  assert.deepEqual(path.map(m=>m.costume),Array.from({length:24},(_,j)=>`走路-${String(j%8+1).padStart(2,'0')}`));
+  const end=path.at(-1);assert.equal(end.x,end.targetX);assert.equal(end.y,end.targetY);
+  if(end.direction==='back')assert(path.every(m=>m.landed===m.trees),'Return must wait until planting is done');
+  const dx=path[1].x-path[0].x,dy=path[1].y-path[0].y;
+  for(let j=2;j<path.length;j++){assert(Math.abs(path[j].x-path[j-1].x-dx)<1e-8);assert(Math.abs(path[j].y-path[j-1].y-dy)<1e-8);}
+ }
+ console.log(`PASS walking: ${walkMoves.length/24} complete outbound/return paths, eight poses cycling over 24 movement steps, exact destinations, return waits for planting.`);
+}

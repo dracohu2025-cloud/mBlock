@@ -10,12 +10,12 @@ const old=JSON.parse(await base.file('project.json').async('string'));
 const p=JSON.parse(await zip.file('project.json').async('string'));
 const robot=p.targets.find(t=>t.name==='蓝豆机器人'),shovel=p.targets.find(t=>t.name==='机器人铁铲');
 const original=old.targets.find(t=>t.name===robot.name),prop=old.targets.find(t=>t.name===shovel.name);
-assert.equal(robot.costumes.length,29);
+assert(robot.costumes.length>=29);
 assert.equal(shovel.visible,false);
 assert(!Object.values(shovel.blocks).some(b=>b.opcode==='looks_show'||b.opcode==='control_forever'),'Separate prop must not drift behind the body');
 assert.equal(robot.currentCostume,5);
 const contacts=[],renders=new Map();
-for(const [i,c]of robot.costumes.entries()){
+for(const [i,c]of robot.costumes.slice(0,29).entries()){
  assert.equal(c.dataFormat,'svg');assert.equal(c.bitmapResolution,1);
  const svg=await zip.file(c.md5ext).async('string');
  const embedded=svg.match(/xlink:href="data:image\/png;base64,([^"]+)"/);assert(embedded,'Missing lossless robot image');
@@ -52,7 +52,26 @@ assert(idleSwitches.some(b=>b.inputs.COSTUME[1][1]==='种树24-01'));
 assert(!idleSwitches.some(b=>b.inputs.COSTUME[1][1]==='蓝豆机器人'),'Idle/plant transition must not jump to unrelated artwork');
 assert.equal(robot.blocks['kMf?r6vj7hG7u/]H6}yD'].inputs.TIMES[1][1],'24');
 assert.equal(Number(robot.blocks['7Ywd6iMbEl9/8Cz{5I0d'].inputs.DURATION[1][1]),1/24);
-for(const t of p.targets)if(![robot.name,shovel.name].includes(t.name))assert.deepEqual(t,old.targets.find(o=>o.name===t.name));
+// Walking extends v036. Compare unrelated targets against that immediate
+// baseline; older exports may have since been re-saved independently in App.
+const comparison=robot.lists['walk-poses']?JSON.parse(await (await JSZip.loadAsync(await fs.readFile('mblock-project/exports/沙漠绿色公益-种植稳固-v036.mblock'))).file('project.json').async('string')):old;
+for(const t of p.targets)if(![robot.name,shovel.name].includes(t.name))assert(JSON.stringify(t)===JSON.stringify(comparison.targets.find(o=>o.name===t.name)),`${t.name} changed unexpectedly relative to baseline`);
+if(robot.lists['walk-poses']){
+ assert.equal(robot.costumes.length,37);
+ assert.deepEqual(robot.costumes.slice(0,29),comparison.targets.find(t=>t.name===robot.name).costumes,'Planting artwork/pivots must remain unchanged');
+ const upper=[],lower=[];
+ for(const c of robot.costumes.slice(29)){
+  assert.equal(c.rotationCenterX,robot.costumes[5].rotationCenterX);assert.equal(c.rotationCenterY,robot.costumes[5].rotationCenterY);
+  const image=await zip.file(c.md5ext).async('nodebuffer');
+  const raster=await sharp(image).ensureAlpha().png().toBuffer();
+  upper.push(await sharp(raster).extract({left:100,top:140,width:700,height:430}).raw().toBuffer());
+  lower.push((await sharp(raster).extract({left:350,top:590,width:360,height:170}).raw().toBuffer()).toString('base64'));
+  assert.equal((await sharp(raster).extract({left:0,top:0,width:1,height:1}).raw().toBuffer())[3],0);
+ }
+ for(const pixels of upper)assert.deepEqual(pixels,upper[0],'Walking must keep the upper body and held shovel registered');
+ assert(new Set(lower).size>=6,'Walking must actually change the leg poses');
+ console.log('PASS walking artwork: eight costumes, alternating legs, fixed upper body/shovel, transparent canvas and unchanged planting costumes.');
+}
 for(const t of p.targets){
  for(const c of [...t.costumes,...t.sounds])assert(zip.file(c.md5ext),'Missing '+c.md5ext);
  for(const [id,b]of Object.entries(t.blocks)){
