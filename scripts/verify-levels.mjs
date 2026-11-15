@@ -11,6 +11,7 @@ const fireworks=p.targets.find(t=>t.name==='通关烟花'),fireworkRuns=[],firew
 const badge=p.targets.find(t=>t.name==='通关徽章'),badgeAwards=[];
 const musicEvents=[];
 const walkMoves=[];
+const oasisChanges=[];
 const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/2**32;};
 const get=(t,id)=>(t.variables[id]||stage.variables[id])[1];
 const set=(t,id,v)=>{(t.variables[id]||stage.variables[id])[1]=v;};
@@ -67,7 +68,7 @@ function* run(t,id){while(id){const b=t.blocks[id],I=k=>input(t,b.inputs[k]);swi
  case 'looks_setsizeto':t.size=Number(I('SIZE'));break;
  case 'looks_changesizeby':t.size+=Number(I('CHANGE'));break;
  case 'looks_switchcostumeto':{const c=I('COSTUME');const byName=t.costumes.findIndex(x=>x.name===c);t.currentCostume=byName>=0?byName:(Number(c)-1)%t.costumes.length;if(t===fireworks)fireworkFrames.push({time:now,frame:t.currentCostume});}break;
- case 'looks_switchbackdropto':{const c=I('BACKDROP');const byName=stage.costumes.findIndex(x=>x.name===c);stage.currentCostume=byName>=0?byName:(Number(c)-1)%stage.costumes.length;}break;
+ case 'looks_switchbackdropto':{const c=I('BACKDROP');const byName=stage.costumes.findIndex(x=>x.name===c);stage.currentCostume=byName>=0?byName:(Number(c)-1)%stage.costumes.length;if(stage.costumes[stage.currentCostume].name==='胜利绿洲')oasisChanges.push({level:Number(get(stage,'game-level')),mature:Number(get(stage,'mature-tree-count')),phase:Number(get(stage,'game-phase'))});}break;
  case 'looks_say':break;
  case 'looks_sayforsecs':yield Number(I('SECS'));break;
  case 'motion_gotoxy':t.x=Number(I('X'));t.y=Number(I('Y'));if(t===robot&&/^walk-(out|back)-move$/.test(id))walkMoves.push({direction:id.includes('-out-')?'out':'back',tick:Number(get(t,'walk-tick')),x:t.x,y:t.y,costume:t.costumes[t.currentCostume].name,landed:Number(get(t,'seedling-handoff-completed')),trees:Number(get(t,'%z6KO!=AV03bkJsGH`QJ')),targetX:Number(get(t,'walk-target-x')),targetY:Number(get(t,'walk-target-y'))});break;
@@ -91,7 +92,8 @@ launch('event_whenflagclicked');
 until(()=>now>=1/30);
 const totalLevels=Number(stage.variables['game-total-levels']?.[1] || 3);
 assert.equal(p.targets.find(t=>t.name==='关卡标题').costumes.length,totalLevels);
-const checkDesert=level=>{if(stage.lists['game-music-names']){const played=musicEvents.findLast(e=>e.type==='play');assert(played);assert.equal(played.sound,list(stage,'game-music-names')[level-1]);assert.equal(played.volume,30);}if(!stage.lists['game-desert-names'])return;assert.equal(stage.costumes.length,totalLevels);assert.equal(stage.currentCostume,level-1);const name=list(stage,'game-desert-names')[level-1];assert.equal(state('game-desert-name'),name);assert.equal(stage.costumes[stage.currentCostume].name,name);};
+const hasOasis=stage.costumes.some(c=>c.name==='胜利绿洲');
+const checkDesert=level=>{if(stage.lists['game-music-names']){const played=musicEvents.findLast(e=>e.type==='play');assert(played);assert.equal(played.sound,list(stage,'game-music-names')[level-1]);assert.equal(played.volume,30);}if(!stage.lists['game-desert-names'])return;assert.equal(stage.costumes.length,totalLevels+(hasOasis?1:0));const victory=hasOasis&&level===totalLevels&&state('mature-tree-count')===5&&state('game-phase')>=2;const name=victory?'胜利绿洲':list(stage,'game-desert-names')[level-1];assert.equal(stage.currentCostume,victory?totalLevels:level-1);assert.equal(state('game-desert-name'),name);assert.equal(stage.costumes[stage.currentCostume].name,name);};
 for(let level=1;level<=totalLevels;level++){
  const failureMode=!!stage.broadcasts['level-retry'];
  if(failureMode){
@@ -123,7 +125,7 @@ for(let level=1;level<=totalLevels;level++){
   click(answer==='A'?'B':'A');until(()=>Number(state('%z6KO!=AV03bkJsGH`QJ'))===n+1);assert.equal(state('quiz-click-choice'),answer);
  }
  if(fireworks&&level===totalLevels){
-  until(()=>fireworks.visible);assert.equal(state('game-phase'),3);assert.equal(state('mature-tree-count'),5);assert.equal(state('fireworks-finished'),0);
+  until(()=>fireworks.visible);assert.equal(state('game-phase'),3);assert.equal(state('mature-tree-count'),5);assert.equal(state('fireworks-finished'),0);checkDesert(level);
   if(badge)assert.equal(badge.visible,false,'Award follows fireworks');
   const next=p.targets.find(t=>t.name==='关卡继续按钮');assert.equal(next.visible,false);
   const started=now;launch('event_whenthisspriteclicked',null,next);until(()=>now>=started+.5);
@@ -164,3 +166,4 @@ if(robot.lists['walk-poses']){
  }
  console.log(`PASS walking: ${walkMoves.length/24} complete outbound/return paths, eight poses cycling over 24 movement steps, exact destinations, return waits for planting.`);
 }
+if(hasOasis){assert.deepEqual(oasisChanges,[{level:totalLevels,mature:5,phase:3}]);assert.equal(stage.currentCostume,0);console.log('PASS oasis: only after all five final-level plants mature, visible during fireworks and badge; earlier levels/retries stay desert; replay restores first desert.');}
